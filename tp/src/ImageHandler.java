@@ -14,7 +14,9 @@ public class ImageHandler {
     public static void main(String[] args) {
 
         try{
-            new ImageHandler().duplicateImageByPixel("tp/ressource/src/img1.png", "tp/ressource/out/img.png");
+            Color[] colors = {new Color(128, 128, 0), new Color(0, 128, 0), new Color(0,128, 128)};
+            Palette palette = new Palette(colors);
+            new ImageHandler().colorReductionDuplicatePicture("tp/ressource/src/img1.png", "tp/ressource/out/img.png", palette);
         }catch (IOException e){
             System.out.println(e);
         }
