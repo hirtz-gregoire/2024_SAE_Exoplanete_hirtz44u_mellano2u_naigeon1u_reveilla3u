@@ -27,7 +27,6 @@ public class Palette implements Iterable<Color>{
         for (int i = 0; i < colors.length; i++) {
             double dist = distanceColor.colorDistance(color, colors[i]);
 
-            System.out.println(dist);
             if (dist < closestDistance) {
                 closestDistance = dist;
                 closest = colors[i];

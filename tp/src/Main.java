@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
 
         try{
-            Color[] colors = {new Color(93, 82, 86), new Color(150, 142, 66), new Color(75,112, 146), new Color(255, 255, 255)};
+            Color[] colors = {new Color(70, 37, 30), new Color(79, 94, 38), new Color(140, 177, 192), new Color(36, 48, 84)};
             Palette palette = new Palette(colors);
             new ImageHandler().colorReductionDuplicatePicture("tp/ressource/src/img1.png", "tp/ressource/out/img.png", palette);
         }catch (IOException e){
