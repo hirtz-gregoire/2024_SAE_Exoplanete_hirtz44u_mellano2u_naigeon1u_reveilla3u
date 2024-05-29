@@ -1,28 +1,14 @@
-import java.awt.*;
+package image;
+
+import tools.ColorTool;
+
+import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.OptionalDouble;
 import javax.imageio.*;
 
 public class ImageHandler {
-
-    public static void main(String[] args) {
-
-        try{
-            Color[] colors = {new Color(128, 128, 0), new Color(0, 128, 0), new Color(0,128, 128)};
-            Palette palette = new Palette(colors);
-            new ImageHandler().colorReductionDuplicatePicture("tp/ressource/src/img1.png", "tp/ressource/out/img.png", palette);
-        }catch (IOException e){
-            System.out.println(e);
-        }
-
-    }
-
 
     public void duplicateImage(String in, String out) throws IOException {
         // Load the input picture
@@ -85,7 +71,6 @@ public class ImageHandler {
                 int rgb = image.getRGB(x, y);
                 Color color = new Color(rgb);
                 color = palette.getClosestColor(color);
-
                 vessel.setRGB(x, y, color.getRGB());
             }
         }

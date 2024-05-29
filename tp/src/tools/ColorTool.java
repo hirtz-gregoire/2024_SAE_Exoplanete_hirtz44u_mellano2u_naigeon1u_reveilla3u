@@ -1,6 +1,8 @@
+package tools;
+
 public class ColorTool {
 
-    static int[] getTabColor(int c) {
+    public static int[] getTabColor(int c) {
         int[] res = new int[3];
 
         res[0] = c & 0xff ; // Blue
