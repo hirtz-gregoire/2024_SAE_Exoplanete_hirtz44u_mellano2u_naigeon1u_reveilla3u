@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.BufferedInputStream;
@@ -64,6 +65,26 @@ public class ImageHandler {
 
                 greyScale = greyScale + (greyScale << 8) + (greyScale << 16);
                 vessel.setRGB(x, y, greyScale-255);
+            }
+        }
+
+        // save picture
+        ImageIO.write(vessel, "png", new File(out));
+    }
+
+    public void colorReductionDuplicatePicture(String in, String out, Palette palette) throws IOException {
+        // Load the input picture and create the vessel
+        BufferedImage image = ImageIO.read(new File(in));
+        BufferedImage vessel = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
+
+        // Copy the image into the vessel and save the result
+        for (int x = 0; x < image.getWidth(); x++) {
+            for (int y = 0; y < image.getHeight(); y++) {
+                int rgb = image.getRGB(x, y);
+                Color color = new Color(rgb);
+                color = palette.getClosestColor(color);
+
+                vessel.setRGB(x, y, color.getRGB());
             }
         }
 
