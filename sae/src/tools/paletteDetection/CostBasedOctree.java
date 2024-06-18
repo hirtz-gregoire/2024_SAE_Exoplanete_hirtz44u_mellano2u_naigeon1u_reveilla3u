@@ -22,6 +22,18 @@ public class CostBasedOctree implements PaletteFinder{
         // Réduction du nombre de couleurs dans l'arbre jusqu'à
         // scorePaletteTailleN > scorePaletteTailleN+1
         // scorePalette obtenu grâce à costFunction.evaluatePalette
+        //
+        // ALGO :
+        // - Divisé l'espace des couleurs en 8
+        // - Si un des espaces à + de une couleur,
+        // - On divise l'espace en 8 (récursivité...)
+        //
+        // -> Création d'un arbre contenant les couleurs au niveau des branches
+        //
+        // Réduction du nombre de couleur dans l'arbre
+        //    -> On trouve la branche contenant le moins de feuilles (de couleurs)
+        //    -> On fusionne toutes les feuilles (couleurs) en fesant la moyenne, créant une nouvelle feuille
+        //    -> On évalue le résultat, si il n'est pas satisfaisant (voir condition d'arrêt plus haut), on continue à fusionner des branches
         throw new UnsupportedOperationException("TODO");
     }
 }
