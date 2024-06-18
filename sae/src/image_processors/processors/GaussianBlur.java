@@ -1,11 +1,10 @@
-package blurrs;
+package image_processors.processors;
 
-import image_processors.processors.DuplicateImageByPixel;
-import tools.blurr.BlurrConvolution;
+import image_processors.Processor;
 
 import java.awt.image.BufferedImage;
 
-public class FlouGaussien implements BlurrConvolution {
+public class GaussianBlur implements Processor {
     private static final double[][] GAUSSIAN_KERNEL_3X3 = {
             {1 / 16d, 2 / 16d, 1 / 16d},
             {2 / 16d, 4 / 16d, 2 / 16d},
@@ -32,7 +31,7 @@ public class FlouGaussien implements BlurrConvolution {
 
 
     @Override
-    public BufferedImage blurr(BufferedImage image) {
+    public BufferedImage process(BufferedImage image) {
         int width = image.getWidth();
         int height = image.getHeight();
         BufferedImage blurredImage = new DuplicateImageByPixel().process(image);

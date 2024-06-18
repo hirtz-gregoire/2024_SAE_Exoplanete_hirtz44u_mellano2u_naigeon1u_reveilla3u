@@ -5,11 +5,11 @@ import image_processors.Processor;
 
 import java.awt.image.BufferedImage;
 
-public class Blurr implements Processor {
+public class Blur implements Processor {
 
     BlurrConvolution convolution;
 
-    public Blurr(BlurrConvolution convolutionType) {
+    public Blur(BlurrConvolution convolutionType) {
         this.convolution = convolutionType;
     }
 
