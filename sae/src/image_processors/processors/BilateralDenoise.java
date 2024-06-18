@@ -16,8 +16,9 @@ public class BilateralDenoise implements Processor {
     }
     @Override
     public BufferedImage process(BufferedImage image) {
-        //Entrée : image, sigma_d (sigma de distance), sigma_r (sigma de la plage de valeurs)
-        //
+        //                                                                           Entrée : image, sigma_d (sigma de distance), sigma_r (sigma de la plage de valeurs)
+
+
         //Pour chaque pixel (x, y) dans l'image :
         //    w_sum = 0.0
         //    i_sum = 0.0
