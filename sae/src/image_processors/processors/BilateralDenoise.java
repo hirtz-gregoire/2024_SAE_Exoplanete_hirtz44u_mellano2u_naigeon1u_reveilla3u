@@ -1,6 +1,6 @@
-package image_processor.processors;
+package image_processors.processors;
 
-import image_processor.Processor;
+import image_processors.Processor;
 
 import java.awt.image.BufferedImage;
 
@@ -42,5 +42,6 @@ public class BilateralDenoise implements Processor {
         //    image_filtree[x, y] = i_sum / w_sum
         //
         //Sortie : image_filtree
+        return null;
     }
 }
