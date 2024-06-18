@@ -8,7 +8,6 @@ public class GrayScale implements Processor {
 
     @Override
     public BufferedImage process(BufferedImage image) {
-
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
                 int[] color = ColorTool.getTabColor(image.getRGB(x, y));
@@ -17,8 +16,10 @@ public class GrayScale implements Processor {
                 int greyScale = (color[0]+color[1]+color[2])/3;
 
                 greyScale = greyScale + (greyScale << 8) + (greyScale << 16);
-                vessel.setRGB(x, y, greyScale-255);
+                image.setRGB(x, y, greyScale-255);
             }
         }
+
+        return image;
     }
 }
