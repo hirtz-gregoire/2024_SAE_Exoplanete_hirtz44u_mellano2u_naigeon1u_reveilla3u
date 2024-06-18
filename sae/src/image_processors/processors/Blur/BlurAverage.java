@@ -1,18 +1,17 @@
-package tools.blurr;
+package image_processors.processors.Blur;
 
-import javax.imageio.ImageIO;
+import image_processors.Processor;
+import image_processors.processors.DuplicateImageByPixel;
+
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-public class BlurrAverage {
+public class BlurAverage implements Processor {
 
-    public BufferedImage flouMoyenne(BufferedImage image) {
-        BufferedImage res = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
+    public BufferedImage process(BufferedImage image) {
 
         int height = image.getHeight();
         int width = image.getWidth() ;
-        BufferedImage nvImage = new BufferedImage(width,height,5);
+        BufferedImage nvImage = new DuplicateImageByPixel().process(image);
 
             for(int y=0; y<height;y++) {
                 for(int x=0;x<width;x++) {
@@ -54,5 +53,8 @@ public class BlurrAverage {
 
         return nvImage;
     }
+
+
+
 
 }

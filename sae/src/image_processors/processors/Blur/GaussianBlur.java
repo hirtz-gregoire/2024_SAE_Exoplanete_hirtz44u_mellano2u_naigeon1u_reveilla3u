@@ -1,6 +1,7 @@
-package image_processors.processors;
+package image_processors.processors.Blur;
 
 import image_processors.Processor;
+import image_processors.processors.DuplicateImageByPixel;
 
 import java.awt.image.BufferedImage;
 
