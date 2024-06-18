@@ -12,4 +12,8 @@ public class ColorTool {
         return res;
     }
 
+    public static int getColorIntFromRGB(int r, int g, int b) {
+        return (r << 16) | (g << 8) | b;
+    }
+
 }
