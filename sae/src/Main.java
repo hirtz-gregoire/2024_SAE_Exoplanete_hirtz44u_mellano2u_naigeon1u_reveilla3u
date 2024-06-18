@@ -1,5 +1,4 @@
-import image.ImageHandler;
-import image.Palette;
+import tools.Palette;
 
 import java.awt.*;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package image;
+package tools;
 
 import norm.ColorNorm;
 import norm.NormLab;

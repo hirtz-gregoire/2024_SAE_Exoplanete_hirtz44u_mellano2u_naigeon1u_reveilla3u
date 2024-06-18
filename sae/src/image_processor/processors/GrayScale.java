@@ -1,6 +1,7 @@
 package image_processor.processors;
 
 import image_processor.Processor;
+import tools.ColorTool;
 
 import java.awt.image.BufferedImage;
 
