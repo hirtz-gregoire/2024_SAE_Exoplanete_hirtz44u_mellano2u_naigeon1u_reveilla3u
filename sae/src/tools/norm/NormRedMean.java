@@ -4,6 +4,12 @@ import java.awt.*;
 
 public class NormRedMean implements ColorNorm {
 
+    /**
+     * ColorNorm implementation that use a "human-like" perception of colors
+     * @param c1 The first color to compare
+     * @param c2 The second color to compare
+     * @return The distance between two colors in the color space
+     */
     @Override
     public double colorDistance(Color c1, Color c2) {
         double redShift = 1.0 /2.0 * (c1.getRed() + c2.getRed());

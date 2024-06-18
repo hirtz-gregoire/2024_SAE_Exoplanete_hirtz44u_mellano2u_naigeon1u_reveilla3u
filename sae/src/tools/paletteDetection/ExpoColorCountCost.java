@@ -14,19 +14,14 @@ public class ExpoColorCountCost implements PaletteCostFunction {
 
     private double exponentRate, colorLimit;
 
+    /**
+     * Cost function that evaluate the quality of a palette on a given picture using the distance of colors to the palette and applying a penalty for each colors
+     * @param exponentRate The rate at which the exponential penalty for additional colors grow
+     * @param colorLimit The colorCount score penalty is 0 while colorCount < colorLimit, the penalty for additional color is exponential
+     */
     public ExpoColorCountCost(double exponentRate, double colorLimit) {
         this.exponentRate = exponentRate;
         this.colorLimit = colorLimit;
-    }
-
-    /**
-     * Cost function for the number of color in the palette ( https://www.desmos.com/calculator/x9wkgnyzz4 )
-     * @param colorCount number of color in the palette
-     * @return an exponent double, with a value of 1 when colorCount < colorLimit
-     */
-    private double getColorCountCost(int colorCount) {
-        double alpha = max(colorCount, colorLimit);
-        return exp(exponentRate * (alpha - colorLimit));
     }
 
     public double evaluatePalette(BufferedImage image, Palette palette) {
@@ -37,5 +32,15 @@ public class ExpoColorCountCost implements PaletteCostFunction {
         //
         // Return (sommeDistPixels/nbPixels) * getColorCountCost
         throw new UnsupportedOperationException("TODO");
+    }
+
+    /**
+     * Cost function for the number of color in the palette ( https://www.desmos.com/calculator/x9wkgnyzz4 )
+     * @param colorCount Number of color in the palette
+     * @return An exponent double, with a value of 1 when colorCount < colorLimit
+     */
+    private double getColorCountCost(int colorCount) {
+        double alpha = max(colorCount, colorLimit);
+        return exp(exponentRate * (alpha - colorLimit));
     }
 }

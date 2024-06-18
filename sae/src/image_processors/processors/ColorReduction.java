@@ -14,15 +14,25 @@ public class ColorReduction implements Processor {
 
     /**
      * Quantize the image using a given color palette
-     * @param palette
+     * @param palette The color palette to use
      */
     public ColorReduction(Palette palette) {
         this.palette = palette;
     }
 
     /**
-     * Quantize the image using an automatic algorithm
-     * @param paletteFinder
+     * Quantize the image using a given quantization algorithm
+     * @param paletteFinder The quantization algorithm to use
+     */
+    public ColorReduction(PaletteFinder paletteFinder) {
+        this.paletteFinder = paletteFinder;
+        this.palette = new Palette(new Color[0]);
+    }
+
+    /**
+     * Quantize the image using a given quantization algorithm
+     * @param paletteFinder The quantization algorithm to use
+     * @param inOutPalette The palette that will receive the colors found by the algorithm
      */
     public ColorReduction(PaletteFinder paletteFinder, Palette inOutPalette) {
         this.paletteFinder = paletteFinder;
