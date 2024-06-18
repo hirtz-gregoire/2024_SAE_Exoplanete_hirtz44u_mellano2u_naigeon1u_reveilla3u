@@ -1,6 +1,6 @@
-package image_processor.processors;
+package image_processors.processors;
 
-import image_processor.Processor;
+import image_processors.Processor;
 import tools.ColorTool;
 
 import java.awt.image.BufferedImage;

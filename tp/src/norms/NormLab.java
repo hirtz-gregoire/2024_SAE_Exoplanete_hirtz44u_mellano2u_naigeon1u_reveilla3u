@@ -1,4 +1,4 @@
-package norm;
+package norms;
 
 import tools.Rgb2Lab;
 import java.awt.*;

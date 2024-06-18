@@ -1,6 +1,6 @@
 package image;
 
-import norm.*;
+import norms.*;
 
 import java.awt.*;
 import java.util.Arrays;
