@@ -2,6 +2,7 @@ package tools.paletteDetection;
 
 import tools.Palette;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class CostBasedOctree implements PaletteFinder{
@@ -17,6 +18,13 @@ public class CostBasedOctree implements PaletteFinder{
 
     @Override
     public Palette findPalette(BufferedImage image) {
+        Palette res = new Palette(new Color[0]);
+        findPalette(image, res);
+        return res;
+    }
+
+    @Override
+    public void findPalette(BufferedImage image, Palette inOutPalette) {
         // TODO
         // Algorithme Octree PUIS
         // Réduction du nombre de couleurs dans l'arbre jusqu'à
@@ -34,6 +42,9 @@ public class CostBasedOctree implements PaletteFinder{
         //    -> On trouve la branche contenant le moins de feuilles (de couleurs)
         //    -> On fusionne toutes les feuilles (couleurs) en fesant la moyenne, créant une nouvelle feuille
         //    -> On évalue le résultat, si il n'est pas satisfaisant (voir condition d'arrêt plus haut), on continue à fusionner des branches
+
+
+        inOutPalette.setColors(new Color[0]); // NE PAS OUBLIER LA PALETTE IN/OUT
         throw new UnsupportedOperationException("TODO");
     }
 }

@@ -24,26 +24,23 @@ public class ColorReduction implements Processor {
      * Quantize the image using an automatic algorithm
      * @param paletteFinder
      */
-    public ColorReduction(PaletteFinder paletteFinder) {
+    public ColorReduction(PaletteFinder paletteFinder, Palette inOutPalette) {
         this.paletteFinder = paletteFinder;
+        this.palette = inOutPalette;
     }
 
     @Override
     public BufferedImage process(BufferedImage image) {
-        Palette currentPalette;
-
-        if(palette == null) {
-            currentPalette = paletteFinder.findPalette(image);
-        }
-        else {
-            currentPalette = new Palette(palette.getColors());
+        if(paletteFinder != null) {
+            // Update the palette by reference, usefull for faster clustering
+            paletteFinder.findPalette(image, palette);
         }
 
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
                 int rgb = image.getRGB(x, y);
                 Color color = new Color(rgb);
-                color = currentPalette.getClosestColor(color);
+                color = palette.getClosestColor(color);
                 image.setRGB(x, y, color.getRGB());
             }
         }
