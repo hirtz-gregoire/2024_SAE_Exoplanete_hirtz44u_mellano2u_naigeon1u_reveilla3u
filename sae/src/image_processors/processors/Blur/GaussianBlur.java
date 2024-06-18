@@ -2,76 +2,69 @@ package image_processors.processors.Blur;
 
 import image_processors.Processor;
 import image_processors.processors.DuplicateImageByPixel;
+import tools.ColorTool;
 
 import java.awt.image.BufferedImage;
 
+import static java.lang.Math.*;
+import static java.lang.Math.pow;
+
 public class GaussianBlur implements Processor {
-    private static final double[][] GAUSSIAN_KERNEL_3X3 = {
-            {1 / 16d, 2 / 16d, 1 / 16d},
-            {2 / 16d, 4 / 16d, 2 / 16d},
-            {1 / 16d, 2 / 16d, 1 / 16d}
-    };
+    private final int kernelRadius;
+    // Spacial difference influence
+    private final double sigma_d;
 
-    private static final double[][] GAUSSIAN_KERNEL_5X5 = {
-            {1 / 256d, 4 / 256d, 6 / 256d, 4 / 256d, 1 / 256d},
-            {4 / 256d, 16 / 256d, 24 / 256d, 16 / 256d, 4 / 256d},
-            {6 / 256d, 24 / 256d, 36 / 256d, 24 / 256d, 6 / 256d},
-            {4 / 256d, 16 / 256d, 24 / 256d, 16 / 256d, 4 / 256d},
-            {1 / 256d, 4 / 256d, 6 / 256d, 4 / 256d, 1 / 256d}
-    };
+    /**
+     * Apply a blurring effect on the image by using a gaussian function to get the weighted average of surround pixels
+     * @param kernelSize The size of the filter matrix
+     * @param sigma_d As the spatial parameter sigma_d increases, the larger features get smoothened.
+     */
+    public GaussianBlur(int kernelSize, double sigma_d) {
+        this.sigma_d = sigma_d;
 
-    private static final double[][] GAUSSIAN_KERNEL_7X7 = {
-            {1 / 64d, 6 / 64d, 15 / 64d, 20 / 64d, 15 / 64d, 6 / 64d, 1 / 64d},
-            {6 / 64d, 36 / 64d, 90 / 64d, 120 / 64d, 90 / 64d, 36 / 64d, 6 / 64d},
-            {15 / 64d, 90 / 64d, 225 / 64d, 300 / 64d, 225 / 64d, 90 / 64d, 15 / 64d},
-            {20 / 64d, 120 / 64d, 300 / 64d, 400 / 64d, 300 / 64d, 120 / 64d, 20 / 64d},
-            {15 / 64d, 90 / 64d, 225 / 64d, 300 / 64d, 225 / 64d, 90 / 64d, 15 / 64d},
-            {6 / 64d, 36 / 64d, 90 / 64d, 120 / 64d, 90 / 64d, 36 / 64d, 6 / 64d},
-            {1 / 64d, 6 / 64d, 15 / 64d, 20 / 64d, 15 / 64d, 6 / 64d, 1 / 64d}
-    };
-
-    // TODO
-    // Constructeur avec kernelSize
+        kernelSize = kernelSize - ((kernelSize + 1) % 2);
+        kernelSize = Math.max(kernelSize, 3);
+        this.kernelRadius = kernelSize/2;
+    }
     @Override
     public BufferedImage process(BufferedImage image) {
-        int width = image.getWidth();
-        int height = image.getHeight();
-        BufferedImage blurredImage = new DuplicateImageByPixel().process(image);
+        DuplicateImageByPixel duplicator = new DuplicateImageByPixel();
+        BufferedImage res = duplicator.process(image);
 
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                double sumRed = 0, sumGreen = 0, sumBlue = 0;
+        // foreach pixel
+        for (int x = 0; x < image.getWidth(); x++) {
+            for (int y = 0; y < image.getHeight(); y++) {
+                double weight_sum = 0;
+                double[] color_sum = {0, 0, 0};
 
-                for (int ky = -1; ky <= 1; ky++) {
-                    for (int kx = -1; kx <= 1; kx++) {
-                        int neighborX = x + kx;
-                        int neighborY = y + ky;
+                // foreach pixel in the kernel
+                for(int xi = max(0, x - kernelRadius); xi < min(image.getWidth(), x + kernelRadius); xi++) {
+                    for(int yi = max(0, y - kernelRadius); yi < min(image.getWidth(), y + kernelRadius); yi++) {
+                        // Euclidian distance between the points
+                        double distance = pow(x - xi, 2) + pow(y - yi, 2);
 
-                        if (neighborX < 0) neighborX = 0;
-                        if (neighborY < 0) neighborY = 0;
-                        if (neighborX >= width) neighborX = width - 1;
-                        if (neighborY >= height) neighborY = height - 1;
+                        // Usage of the differences to get the color weight
+                        double weight = exp(-distance / (2.0 * pow(sigma_d, 2)));
 
-                        int pixel = image.getRGB(neighborX, neighborY);
-                        int red = (pixel >> 16) & 0xFF;
-                        int green = (pixel >> 8) & 0xFF;
-                        int blue = pixel & 0xFF;
-
-                        sumRed += red * GAUSSIAN_KERNEL_3X3[ky + 1][kx + 1];
-                        sumGreen += green * GAUSSIAN_KERNEL_3X3[ky + 1][kx + 1];
-                        sumBlue += blue * GAUSSIAN_KERNEL_3X3[ky + 1][kx + 1];
+                        // Usage of the weight to get the color contribution of the pixel in the kernel
+                        int[] xiyiColor = ColorTool.getTabColor(image.getRGB(xi,yi));
+                        weight_sum += weight;
+                        color_sum[0] += xiyiColor[0] * weight;
+                        color_sum[1] += xiyiColor[1] * weight;
+                        color_sum[2] += xiyiColor[2] * weight;
                     }
                 }
 
-                int newRed = Math.min(255, Math.max(0, (int) sumRed));
-                int newGreen = Math.min(255, Math.max(0, (int) sumGreen));
-                int newBlue = Math.min(255, Math.max(0, (int) sumBlue));
+                // New pixel color based on the weighted color sum of all pixels of the kernel
+                int[] newColor = new int[3];
+                newColor[0] = (int)(color_sum[0] / weight_sum);
+                newColor[1] = (int)(color_sum[1] / weight_sum);
+                newColor[2] = (int)(color_sum[2] / weight_sum);
 
-                int newPixel = (newRed << 16) | (newGreen << 8) | newBlue;
-                blurredImage.setRGB(x, y, newPixel);
+                res.setRGB(x, y, ColorTool.getColorIntFromRGB(newColor[0], newColor[1], newColor[2]));
             }
         }
 
-        return blurredImage;
+        return res;
     }
 }

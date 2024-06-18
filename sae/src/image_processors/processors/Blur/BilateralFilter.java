@@ -16,7 +16,7 @@ public class BilateralFilter implements Processor {
 
     /**
      * Processor used to apply a denoising filter to the image ( https://en.wikipedia.org/wiki/Bilateral_filter )
-     * @param kernelSize
+     * @param kernelSize The size of the filter matrix
      * @param sigma_d As the spatial parameter sigma_d increases, the larger features get smoothened.
      * @param sigma_r As the range parameter sigma_r increases, the filter approach gaussianBlur and the intensity is ignored.
      */
