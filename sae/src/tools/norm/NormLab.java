@@ -1,4 +1,4 @@
-package norm;
+package tools.norm;
 
 import tools.Rgb2Lab;
 

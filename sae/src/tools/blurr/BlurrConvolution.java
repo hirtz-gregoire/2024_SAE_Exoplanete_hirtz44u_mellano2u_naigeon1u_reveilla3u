@@ -1,4 +1,4 @@
-package blurr;
+package tools.blurr;
 
 import java.awt.image.BufferedImage;
 

@@ -1,4 +1,4 @@
-package norm;
+package tools.norm;
 
 import java.awt.*;
 

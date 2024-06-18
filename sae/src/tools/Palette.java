@@ -1,7 +1,7 @@
 package tools;
 
-import norm.ColorNorm;
-import norm.NormLab;
+import tools.norm.ColorNorm;
+import tools.norm.NormLab;
 
 import java.awt.*;
 import java.util.Arrays;

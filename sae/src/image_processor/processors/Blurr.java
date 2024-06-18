@@ -1,6 +1,6 @@
 package image_processor.processors;
 
-import blurr.BlurrConvolution;
+import tools.blurr.BlurrConvolution;
 import image_processor.Processor;
 
 import java.awt.image.BufferedImage;
