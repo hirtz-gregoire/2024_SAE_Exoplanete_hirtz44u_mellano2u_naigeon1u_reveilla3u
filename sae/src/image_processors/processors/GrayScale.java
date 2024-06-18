@@ -7,6 +7,10 @@ import java.awt.image.BufferedImage;
 
 public class GrayScale implements Processor {
 
+    /**
+     * Turn the given image into a greyscale version of it
+     */
+    public GrayScale() {}
     @Override
     public BufferedImage process(BufferedImage image) {
         for (int x = 0; x < image.getWidth(); x++) {

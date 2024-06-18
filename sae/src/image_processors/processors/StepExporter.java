@@ -12,6 +12,12 @@ public class StepExporter implements Processor {
     private String filename, extension, format;
     private int stepCount = 0;
 
+    /**
+     * Save a snapshot of the given image
+     * @param filename filename (path + filename)
+     * @param extension extension of the file
+     * @param format format of the image
+     */
     public StepExporter(String filename, String extension, String format) {
         this.filename = filename;
         this.extension = extension;

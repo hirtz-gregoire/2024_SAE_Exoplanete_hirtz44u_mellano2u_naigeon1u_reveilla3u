@@ -14,6 +14,12 @@ public class BilateralFilter implements Processor {
     // Color intensity difference influence
     private final double sigma_r;
 
+    /**
+     * Processor used to apply a denoising filter to the image ( https://en.wikipedia.org/wiki/Bilateral_filter )
+     * @param kernelSize
+     * @param sigma_d As the spatial parameter sigma_d increases, the larger features get smoothened.
+     * @param sigma_r As the range parameter sigma_r increases, the filter approach gaussianBlur and the intensity is ignored.
+     */
     public BilateralFilter(int kernelSize, double sigma_d, double sigma_r) {
         this.sigma_d = sigma_d;
         this.sigma_r = sigma_r;

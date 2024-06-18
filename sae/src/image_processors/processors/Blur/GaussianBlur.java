@@ -30,7 +30,8 @@ public class GaussianBlur implements Processor {
             {1 / 64d, 6 / 64d, 15 / 64d, 20 / 64d, 15 / 64d, 6 / 64d, 1 / 64d}
     };
 
-
+    // TODO
+    // Constructeur avec kernelSize
     @Override
     public BufferedImage process(BufferedImage image) {
         int width = image.getWidth();

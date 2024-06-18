@@ -8,9 +8,17 @@ public class DuplicateImageByPixel implements Processor {
 
     private int filter;
 
+    /**
+     * Duplicate the given image
+     */
     public DuplicateImageByPixel() {
         this.filter = 0xFFFFFF;
     }
+
+    /**
+     * Duplicate the given image and apply a given color mask
+     * @param filter The color mask to apply to the copy
+     */
     public DuplicateImageByPixel(int filter) {
         this.filter = filter;
     }

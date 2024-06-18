@@ -10,10 +10,18 @@ import static java.lang.Math.round;
 public class ItensityFilter implements Processor {
 
     private double intensity;
+
+    /**
+     * Increase the intensity of the given image by 75%
+     */
     public ItensityFilter() {
         this.intensity = 75;
     }
 
+    /**
+     * Modify the intensity of the given image by [intensity]%
+     * @param intensity the intensity change in % (can be negative)
+     */
     public ItensityFilter(double intensity) {
         this.intensity = intensity;
     }

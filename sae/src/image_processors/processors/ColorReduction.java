@@ -11,6 +11,11 @@ public class ColorReduction implements Processor {
 
     private Palette palette;
     private PaletteFinder paletteFinder;
+
+    /**
+     * Quantize the image using a given color palette
+     * @param palette
+     */
     public ColorReduction(Palette palette) {
         this.palette = palette;
     }
