@@ -1,4 +1,4 @@
-package image_processor;
+package image_processors;
 
 import java.awt.image.BufferedImage;
 

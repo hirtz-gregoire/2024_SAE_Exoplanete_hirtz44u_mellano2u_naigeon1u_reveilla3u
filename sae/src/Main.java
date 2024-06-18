@@ -1,6 +1,6 @@
-import image_processor.ImageProcessor;
-import image_processor.Processor;
-import image_processor.processors.ColorReduction;
+import image_processors.ImageProcessor;
+import image_processors.Processor;
+import image_processors.processors.ColorReduction;
 import tools.Palette;
 
 import javax.imageio.ImageIO;
@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Main {
 

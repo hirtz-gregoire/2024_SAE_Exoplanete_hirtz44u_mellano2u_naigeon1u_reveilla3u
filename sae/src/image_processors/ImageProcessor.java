@@ -1,7 +1,6 @@
-package image_processor;
+package image_processors;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class ImageProcessor {
     Processor[] myProcessors;

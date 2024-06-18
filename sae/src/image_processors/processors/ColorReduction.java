@@ -1,7 +1,7 @@
-package image_processor.processors;
+package image_processors.processors;
 
 import tools.Palette;
-import image_processor.Processor;
+import image_processors.Processor;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
