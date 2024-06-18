@@ -6,7 +6,7 @@ import tools.ColorTool;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.*;
 
-public class BilateralDenoise implements Processor {
+public class BilateralFilter implements Processor {
 
     private final int kernelRadius;
     // Spacial difference influence
@@ -14,7 +14,7 @@ public class BilateralDenoise implements Processor {
     // Color intensity difference influence
     private final double sigma_r;
 
-    public BilateralDenoise(int kernelSize, double sigma_d, double sigma_r) {
+    public BilateralFilter(int kernelSize, double sigma_d, double sigma_r) {
         this.sigma_d = sigma_d;
         this.sigma_r = sigma_r;
 
