@@ -8,7 +8,7 @@ public class CostBasedOctree implements PaletteFinder{
 
     private PaletteCostFunction costFunction;
     /**
-     * Octree algorithm for finding the optimal color palette in a picture
+     * Octree algorithm for finding the optimal color palette in a picture ( https://youtu.be/LQST9MITKrw?si=6Yax5eiAJJdjQq0O )
      * @param costFunction The cost function used to evaluate Octree palettes
      */
     public CostBasedOctree(PaletteCostFunction costFunction) {
