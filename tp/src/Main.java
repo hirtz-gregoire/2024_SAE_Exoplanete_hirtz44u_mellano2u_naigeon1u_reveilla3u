@@ -11,7 +11,7 @@ public class Main {
         try{
             Color[] colors = {new Color(34, 34, 31), new Color(214, 210, 206), new Color(138, 99, 66), new Color(113, 72, 48), new Color(182, 152, 124)};
             Palette palette = new Palette(colors);
-            new ImageHandler().colorReductionDuplicatePicture("tp/ressource/src/img3.png", "tp/ressource/out/img.png", palette);
+            new ImageHandler().colorReductionDuplicatePicture("tp/ressource/img/img1.png", "tp/ressource/out/img1.png", palette);
         }catch (IOException e){
             System.out.println(e);
         }
