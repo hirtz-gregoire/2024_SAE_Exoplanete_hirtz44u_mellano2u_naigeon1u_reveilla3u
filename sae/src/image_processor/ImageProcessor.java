@@ -4,9 +4,9 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class ImageProcessor {
-    ArrayList<Processor> myProcessors;
+    Processor[] myProcessors;
 
-    public ImageProcessor(ArrayList<Processor> processors) {
+    public ImageProcessor(Processor[] processors) {
         myProcessors = processors;
     }
 
