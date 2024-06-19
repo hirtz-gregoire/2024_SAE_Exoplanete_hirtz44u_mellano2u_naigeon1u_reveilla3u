@@ -1,7 +1,7 @@
 import image_processors.ImageProcessor;
 import image_processors.Processor;
-import image_processors.processors.Blur.BlurAverage;
 import image_processors.processors.ColorReduction;
+import image_processors.processors.StepExporter;
 import tools.Palette;
 
 import javax.imageio.ImageIO;
@@ -22,15 +22,19 @@ public class Main {
             Color[] colors = {new Color(34, 34, 31), new Color(214, 210, 206), new Color(138, 99, 66), new Color(113, 72, 48), new Color(182, 152, 124)};
             Palette palette = new Palette(colors);
 
+            String[] nameExtension = sortie.split("\\.(?=[^\\.]+$)");
+            StepExporter exporter = new StepExporter(nameExtension[0],"." + nameExtension[1], format);
+
             Processor[] processes = {
-                    (Processor) new BlurAverage(10),
+                    exporter,
+                    new ColorReduction(palette),
+                    exporter
             };
 
             ImageProcessor imageProcessor = new ImageProcessor(processes);
-
             BufferedImage image = ImageIO.read(new File(entree));
-            image = imageProcessor.processImage(image);
-            ImageIO.write(image, format, new File(sortie));
+            imageProcessor.processImage(image);
+            // No need to export the image, as the exporter is already doing so for every step in the process
         }catch (IOException e){
             System.out.println(e);
         }

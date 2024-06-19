@@ -5,6 +5,10 @@ import java.awt.image.BufferedImage;
 public class ImageProcessor {
     Processor[] myProcessors;
 
+    /**
+     * Class used to apply multiple effects on an image
+     * @param processors list of effects to apply to the given image
+     */
     public ImageProcessor(Processor[] processors) {
         myProcessors = processors;
     }

@@ -6,7 +6,12 @@ import java.awt.*;
 
 public class NormLab implements ColorNorm{
 
-
+    /**
+     * ColorNorm implementation that use the CIELAB color space ( https://en.wikipedia.org/wiki/CIELAB_color_space )
+     * @param c1 The first color to compare
+     * @param c2 The second color to compare
+     * @return The distance between two colors in the color space
+     */
     @Override
     public double colorDistance(Color c1, Color c2) {
         int[] c1_lab = Rgb2Lab.rgb2lab(c1);

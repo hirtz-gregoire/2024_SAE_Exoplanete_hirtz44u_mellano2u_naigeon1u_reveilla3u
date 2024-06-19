@@ -11,29 +11,46 @@ public class ColorReduction implements Processor {
 
     private Palette palette;
     private PaletteFinder paletteFinder;
+
+    /**
+     * Quantize the image using a given color palette
+     * @param palette The color palette to use
+     */
     public ColorReduction(Palette palette) {
         this.palette = palette;
     }
+
+    /**
+     * Quantize the image using a given quantization algorithm
+     * @param paletteFinder The quantization algorithm to use
+     */
     public ColorReduction(PaletteFinder paletteFinder) {
         this.paletteFinder = paletteFinder;
+        this.palette = new Palette(new Color[0]);
+    }
+
+    /**
+     * Quantize the image using a given quantization algorithm
+     * @param paletteFinder The quantization algorithm to use
+     * @param inOutPalette The palette that will receive the colors found by the algorithm
+     */
+    public ColorReduction(PaletteFinder paletteFinder, Palette inOutPalette) {
+        this.paletteFinder = paletteFinder;
+        this.palette = inOutPalette;
     }
 
     @Override
     public BufferedImage process(BufferedImage image) {
-        Palette currentPalette;
-
-        if(palette == null) {
-            currentPalette = paletteFinder.findPalette(image);
-        }
-        else {
-            currentPalette = new Palette(palette.getColors());
+        if(paletteFinder != null) {
+            // Update the palette by reference, usefull for faster clustering
+            paletteFinder.findPalette(image, palette);
         }
 
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
                 int rgb = image.getRGB(x, y);
                 Color color = new Color(rgb);
-                color = currentPalette.getClosestColor(color);
+                color = palette.getClosestColor(color);
                 image.setRGB(x, y, color.getRGB());
             }
         }
