@@ -1,5 +1,6 @@
 import image_processors.ImageProcessor;
 import image_processors.Processor;
+import image_processors.processors.Blur.BlurAverage;
 import image_processors.processors.ColorReduction;
 import tools.Palette;
 
@@ -22,7 +23,7 @@ public class Main {
             Palette palette = new Palette(colors);
 
             Processor[] processes = {
-                    (Processor) new ColorReduction(palette),
+                    (Processor) new BlurAverage(10),
             };
 
             ImageProcessor imageProcessor = new ImageProcessor(processes);
