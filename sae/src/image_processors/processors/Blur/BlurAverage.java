@@ -58,7 +58,7 @@ public class BlurAverage implements Processor {
                 int avgBlue = sumBlue / count;
 
                 // Recomposition de la couleur
-                int newPixel = (avgRed << 16) | (avgGreen << 8) | avgBlue;
+                int newPixel = ColorTool.getColorIntFromRGB(avgRed, avgGreen, avgBlue);
 
                 // Affectation du pixel flouté
                 nvImage.setRGB(x, y, newPixel);

@@ -38,8 +38,14 @@ public class GaussianBlur implements Processor {
                 double[] color_sum = {0, 0, 0};
 
                 // foreach pixel in the kernel
-                for(int xi = max(0, x - kernelRadius); xi < min(image.getWidth(), x + kernelRadius); xi++) {
-                    for(int yi = max(0, y - kernelRadius); yi < min(image.getWidth(), y + kernelRadius); yi++) {
+                for(int xi = x - kernelRadius; xi < x + kernelRadius; xi++) {
+                    // Check if kernel out of bound because "for" loop's values are constant
+                    if(xi < 0 || xi >= image.getWidth()) continue;
+
+                    for(int yi = y - kernelRadius; yi < y + kernelRadius; yi++) {
+                        // Check if kernel out of bound because "for" loop's values are constant
+                        if(yi < 0 || yi >= image.getHeight()) continue;
+
                         // Euclidian distance between the points
                         double distance = pow(x - xi, 2) + pow(y - yi, 2);
 
