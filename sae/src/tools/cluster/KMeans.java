@@ -17,10 +17,10 @@ public class KMeans implements Clustering {
      *
      * @param data Un tableau en deux dimensions représentant les objets à classifier.
      * @return Un tableau en une dimension contenant le numéro de cluster pour chaque objet.
-     *
-     *
+     * <p>
+     * <p>
      * Algorithme 1 : K-Means
-     *
+     * <p>
      * Entrées : ng ≥ 0 nombre de groupes
      * Entrées : D = {di }i données
      * Résultat : Centroïdes mis à jour
@@ -29,16 +29,16 @@ public class KMeans implements Clustering {
      * 2 ci ← random(D)
      * Boucle principale
      * 3 tant que (non(ni)) faire
-     *      Initialisation Groupes
-     *      4 pour i ∈ [0, ng] faire
-     *      5 Gi ← ∅
-     *      Construction des Groupes
-     *      6 pour d ∈ D faire
-     *      7 k ← indiceCentroidePlusProche(d, {ci }i )
-     *      8 Gk ← Gk ∪ d
-     *      Mise à jour des centroïdes
-     *      9 pour i ∈ [0, ng] faire
-     *      10 ci ← barycentre(Gi)
+     * Initialisation Groupes
+     * 4 pour i ∈ [0, ng] faire
+     * 5 Gi ← ∅
+     * Construction des Groupes
+     * 6 pour d ∈ D faire
+     * 7 k ← indiceCentroidePlusProche(d, {ci }i )
+     * 8 Gk ← Gk ∪ d
+     * Mise à jour des centroïdes
+     * 9 pour i ∈ [0, ng] faire
+     * 10 ci ← barycentre(Gi)
      */
     @Override
     public int[] cluster(double[][] data) {
@@ -74,6 +74,17 @@ public class KMeans implements Clustering {
                 int centroidIndex = indexOfCentroid(data[i], centroids);
                 groups.get(centroidIndex).add(data[i]);
                 labels[i] = centroidIndex;
+            }
+
+            // Vérification des groupes vides et réassignation si nécessaire
+            for (int i = 0; i < nbrGroup; i++) {
+                if (groups.get(i).isEmpty()) {
+                    // Réassigner aléatoirement des points aux clusters vides
+                    int randomIndex = random.nextInt(nbrObjects);
+                    groups.get(i).add(data[randomIndex]);
+                    labels[randomIndex] = i;
+                    converged = false;
+                }
             }
 
             // Mise à jour des centroïdes
