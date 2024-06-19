@@ -1,0 +1,146 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+package (image_processor) {
+
+    interface Processor{
+        + process(BufferedImage image) : BufferedImage
+    }
+
+    class ImageProcessor{
+        + myProcessors: Processor[]
+
+        + ImageProcessor(Processor[] processors)
+        + processImage(BufferedImage image) : BufferedImage
+    }
+    ImageProcessor -> Processor
+
+    package (processor){
+
+        class ColorReduction{
+            - palette Palette
+            - paletteFinder PaletteFinder
+
+            + ColorReduction(Palette palette)
+            + ColorReduction(PaletteFinder paletteFinder)
+
+            + process(BufferedImage image) : BufferedImage
+        }
+        ColorReduction ...|> Processor
+
+        class DuplicateImageByPixel{
+            - filter: int
+
+            + DuplicateImageByPixel()
+            + DuplicateImageByPixel(int filter)
+
+            + process(BufferedImage image) : BufferedImage
+        }
+        DuplicateImageByPixel ...|> Processor
+
+        class GrayScale{
+            + process(BufferedImage image) : BufferedImage
+        }
+        GrayScale ...|> Processor
+
+        class BilateralDenoise{
+            - sigma_d: double
+            - sigma_r: double
+
+            + BilateralDenoise(double sigma_d, double sigma_r)
+
+            + process(BufferedImage image) : BufferedImage
+        }
+
+        package (Blur){
+            class BlurAverage{
+                - matrice: int
+
+                + BlurAverage(int taille)
+
+                + process(BufferedImage image) : BufferedImage
+            }
+            BlurAverage ..|> Processor
+
+            class GaussianBlue{
+                {static} - double[][] GAUSSIAN_KERNEL_3X3
+                {static} - double[][] GAUSSIAN_KERNEL_5X5
+                {static} - double[][] GAUSSIAN_KERNEL_7X7
+
+                + process(BufferedImage image) : BufferedImage
+            }
+            GaussianBlue ..|> Processor
+        }
+    }
+}
+
+package (tools){
+
+    package (norm){
+        interface ColorNorm{
+            + colorDistance(Color c1, Color c2) : double
+        }
+
+        class NormLab{
+            + colorDistance(Color c1, Color c2) : double
+        }
+        NormLab ..|> ColorNorm
+
+        class NormRedMean{
+            + colorDistance(Color c1, Color c2) : double
+        }
+        NormRedMean ..|> ColorNorm
+
+        class NormSquareMean{
+            + colorDistance(Color c1, Color c2) : double
+        }
+        NormSquareMean ..|> ColorNorm
+    }
+
+    class ColorTool {
+        {static} + getTabColor(int colorInteger) : int[]
+    }
+
+    class LabeledColors {
+        {static} + TUNDRA: int
+        {static} + TAIGA: int
+        {static} + FORET_TEMPEREE: int
+        {static} + FORET_TROPICALE: int
+        {static} + SAVANE: int
+        {static} + PRAIRIE: int
+        {static} + DESERT: int
+        {static} + GLACIER: int
+        {static} + EAU_PEU_PROFONDE: int
+        {static} + EAU_PROFONDE: int
+
+        - LabeledColors()
+        {static} + colorToRgb(int r, int g, int b) : int
+    }
+
+    package (paletteDetection){
+        interface PaletteFinder{
+            + findPalette(BufferedImage image) : Palette
+        }
+    }
+
+    class Palette{
+        - colors: Color[]
+        {static} - distanceColor ColorNorm
+
+        + Palette(Color[] colors)
+
+        + getClosestColor(Color color) : Color
+        + getColors() : Color[]
+        + getColor(int index) : Color
+        + iterator() : Iterator<Color>
+    }
+
+    class Rgb2Lab{
+        {static} + rgb2lab(Color c) : int[]
+        {static} + rgb2lab(int R, int G, int B) : int[]
+    }
+
+}
+
+@enduml

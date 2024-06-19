@@ -1,4 +1,4 @@
-package tools.Cluster;
+package tools.cluster;
 
 public interface Clustering {
 

@@ -1,4 +1,4 @@
-package image_processors.processors.Blur;
+package image_processors.processors.blur;
 
 import image_processors.Processor;
 import image_processors.processors.DuplicateImageByPixel;
@@ -11,15 +11,17 @@ public class BlurAverage implements Processor {
 
     /**
      * Apply a blurring effect on the image by averaging the pixel's colors
+     *
      * @param kernelSize The size of the filter matrix
      */
     public BlurAverage(int kernelSize) {
-        this.kernelSize =  kernelSize;
+        this.kernelSize = kernelSize;
     }
+
     public BufferedImage process(BufferedImage image) {
 
         int height = image.getHeight();
-        int width = image.getWidth() ;
+        int width = image.getWidth();
         BufferedImage nvImage = new DuplicateImageByPixel().process(image);
 
         int filterOffset = this.kernelSize / 2;
@@ -67,8 +69,6 @@ public class BlurAverage implements Processor {
 
         return nvImage;
     }
-
-
 
 
 }
