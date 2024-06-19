@@ -14,9 +14,6 @@ public class Palette implements Iterable<Color>{
     private static ColorNorm distanceColor = new NormLab();
 
     public Palette(Color[] colors) {
-        if (colors.length <= 0){
-            throw new IllegalArgumentException("colors is empty");
-        }
         this.colors = colors;
     }
 
