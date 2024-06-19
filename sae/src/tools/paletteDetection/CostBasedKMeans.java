@@ -53,22 +53,23 @@ public class CostBasedKMeans implements PaletteFinder {
         double previousScore = 100000000;
         double score = previousScore - 1;
         Color[] bestPalette = new Color[0];
-        int colorCount = 1;
+        int colorCount = 0;
 
         // Try a bigger palette until the palette does not boost the score anymore
         while(score < previousScore) {
-
+            colorCount++;
             previousScore = score;
             inOutPalette.setColors(bestPalette);
 
             KMeans kMeans = new KMeans(colorCount);
             int[] clusters = kMeans.cluster(data);
-
             bestPalette = new Color[colorCount];
-            for(int i = 0; i < bestPalette.length; i++) {
+
+            for(int i = 0; i < colorCount; i++) {
                 int[] colorSum = new int[]{0,0,0};
 
                 int k = 0;
+                int pointSum = 0;
                 for (int x = 0; x < image.getWidth(); x++) {
                     for (int y = 0; y < image.getHeight(); y++) {
                         if(clusters[k++] == i) {
@@ -76,17 +77,19 @@ public class CostBasedKMeans implements PaletteFinder {
                             colorSum[0] += pixelColor[0];
                             colorSum[1] += pixelColor[1];
                             colorSum[2] += pixelColor[2];
+                            pointSum ++;
                         }
                     }
                 }
 
-                colorSum[0] /= k;
-                colorSum[1] /= k;
-                colorSum[2] /= k;
+                colorSum[0] /= pointSum;
+                colorSum[1] /= pointSum;
+                colorSum[2] /= pointSum;
 
                 bestPalette[i] = new Color(colorSum[0], colorSum[1], colorSum[2]);
-                score = costFunction.evaluatePalette(image, new Palette(bestPalette));
             }
+
+            score = costFunction.evaluatePalette(image, new Palette(bestPalette));
         }
     }
 }
