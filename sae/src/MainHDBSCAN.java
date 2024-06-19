@@ -1,10 +1,8 @@
 import image_processors.ImageProcessor;
 import image_processors.Processor;
-import image_processors.processors.Clusterer;
-import image_processors.processors.ColorReduction;
-import image_processors.processors.blur.GaussianBlur;
-import image_processors.processors.StepExporter;
+import image_processors.processors.*;
 import tools.Palette;
+import tools.cluster.DBSCAN;
 import tools.cluster.KMeans;
 import tools.paletteDetection.CostBasedKMeans;
 import tools.paletteDetection.ExpoColorCountCost;
@@ -15,12 +13,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Main {
+public class MainHDBSCAN {
 
     public static void main(String[] args) {
 
-        String entree = "sae/ressource/img/Planete1.jpg";
-        String sortie = "sae/ressource/out/Planete1.jpg";
+        String entree = "ressource/img/Planete1.jpg";
+        String sortie = "ressource/out/Planete1.jpg";
         String format = "png";
 
         try{
@@ -32,15 +30,15 @@ public class Main {
 
             Processor[] processes = {
                     exporter,
-                    new ColorReduction(new CostBasedKMeans(new ExpoColorCountCost(2, 5)), palette),
+                    new ColorReduction(new CostBasedKMeans(new ExpoColorCountCost(0.05, 5)), palette),
                     exporter,
-                    new Clusterer(new KMeans(10), Clusterer.CLUSTER_BY_COLOR, exporter, palette),
-                    exporter
+                    new Clusterer(new DBSCAN(1, 5), Clusterer.CLUSTER_BY_COLOR_AND_POSITION, exporter, palette),
+                    exporter,
             };
 
             ImageProcessor imageProcessor = new ImageProcessor(processes);
             BufferedImage image = ImageIO.read(new File(entree));
-            imageProcessor.processImage(image);
+            imageProcessor.process(image);
             // No need to export the image, as the exporter is already doing so for every step in the process
         }catch (IOException e){
             System.out.println(e);

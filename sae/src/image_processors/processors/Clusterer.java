@@ -5,7 +5,6 @@ import image_processors.Processor;
 import tools.cluster.Clustering;
 import tools.ColorTool;
 import tools.Palette;
-import tools.cluster.KMeans;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -23,39 +22,40 @@ public class Clusterer implements Processor {
     // -----------------------------------------------------------
 
     private Clustering clusteringAlgorithm;
-    private Palette palette;
     private int clusterMode;
     private StepExporter exporter;
+    private Palette palette;
+    private boolean ignoreBlack;
 
     public Clusterer(Clustering clusteringAlgorithm, int clusterMode) {
-        this.clusteringAlgorithm = clusteringAlgorithm;
-        this.palette = null;
-        if(clusterMode < 0 || clusterMode > 2) {
-            clusterMode = 0;
-        }
-        this.clusterMode = clusterMode;
-        this.exporter = null;
+        this(clusteringAlgorithm, clusterMode, false, null, null);
+    }
+    public Clusterer(Clustering clusteringAlgorithm, int clusterMode, boolean ignoreBlack) {
+        this(clusteringAlgorithm, clusterMode, ignoreBlack, null, null);
     }
 
     public Clusterer(Clustering clusteringAlgorithm, int clusterMode, StepExporter exporter) {
+        this(clusteringAlgorithm, clusterMode, false, exporter, null);
+    }
+    public Clusterer(Clustering clusteringAlgorithm, int clusterMode, boolean ignoreBlack, StepExporter exporter) {
+        this(clusteringAlgorithm, clusterMode, ignoreBlack, exporter, null);
+    }
+
+     public Clusterer(Clustering clusteringAlgorithm, int clusterMode, StepExporter exporter, Palette palette) {
+         this(clusteringAlgorithm, clusterMode, false, exporter, palette);
+     }
+
+    public Clusterer(Clustering clusteringAlgorithm, int clusterMode, boolean ignoreBlack, StepExporter exporter, Palette palette) {
         this.clusteringAlgorithm = clusteringAlgorithm;
-        this.palette = null;
+        this.palette = palette;
+        this.exporter = exporter;
+        this.ignoreBlack = ignoreBlack;
+
         if(clusterMode < 0 || clusterMode > 2) {
             clusterMode = 0;
         }
         this.clusterMode = clusterMode;
-        this.exporter = exporter;
     }
-
-     public Clusterer(Clustering clusteringAlgorithm, int clusterMode, StepExporter exporter, Palette palette) {
-         this.clusteringAlgorithm = clusteringAlgorithm;
-         this.palette = palette;
-         if(clusterMode < 0 || clusterMode > 2) {
-             clusterMode = 0;
-         }
-         this.clusterMode = clusterMode;
-         this.exporter = exporter;
-     }
     @Override
     public BufferedImage process(BufferedImage image) {
         System.out.println("Clusterer processing...");
@@ -66,18 +66,21 @@ public class Clusterer implements Processor {
             for (int y = 0; y < image.getHeight(); y++) {
                 double[] pixelData = new double[0];
 
+                int color = image.getRGB(x, y);
+                int[] colors = ColorTool.getTabColor(color);
+
+                if(ignoreBlack && colors[0] == 0 && colors[1] == 0 && colors[2] == 0) {
+                    continue;
+                }
+
                 switch (clusterMode) {
                     case CLUSTER_BY_COLOR:
-                        int color = image.getRGB(x, y);
-                        int[] colors = ColorTool.getTabColor(color);
                         pixelData = new double[]{colors[0], colors[1], colors[2]};
                         break;
                     case CLUSTER_BY_POSITION:
                         pixelData = new double[]{x, y};
                         break;
                     case CLUSTER_BY_COLOR_AND_POSITION:
-                        color = image.getRGB(x, y);
-                        colors = ColorTool.getTabColor(color);
                         pixelData = new double[]{colors[0], colors[1], colors[2], x, y};
                         break;
                 }
@@ -100,6 +103,14 @@ public class Clusterer implements Processor {
         int i = 0;
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
+
+                int color = image.getRGB(x, y);
+                int[] colors = ColorTool.getTabColor(color);
+
+                if(ignoreBlack && colors[0] == 0 && colors[1] == 0 && colors[2] == 0) {
+                    continue;
+                }
+
                 image.setRGB(x, y, getColorGradient(clusters[i++], maxValue).getRGB());
             }
         }
@@ -150,7 +161,7 @@ public class Clusterer implements Processor {
 
         for(int i = 0; i < maxValue; i++) {
             // Create the background
-            BufferedImage outputImage = processor.processImage(image);
+            BufferedImage outputImage = processor.process(image);
 
             // Draw the colors on it
             int k = 0;
@@ -171,7 +182,7 @@ public class Clusterer implements Processor {
         // When a palette is given, we assume it's the palette of the image and just draw the pixels that match the palette
         for(Color color : palette.getColors()) {
             // Create the background
-            BufferedImage outputImage = processor.processImage(image);
+            BufferedImage outputImage = processor.process(image);
 
             // Draw the colors on it
             for (int x = 0; x < image.getWidth(); x++) {
@@ -191,7 +202,7 @@ public class Clusterer implements Processor {
         // When a palette is given, we assume it's the palette of the image and just draw the pixels that match the palette
         for(Color color : palette.getColors()) {
             // Create the background
-            BufferedImage outputImage = processor.processImage(image);
+            BufferedImage outputImage = processor.process(image);
 
             // Draw the colors on it
             int maxValue = Arrays.stream(clusters).max().getAsInt();

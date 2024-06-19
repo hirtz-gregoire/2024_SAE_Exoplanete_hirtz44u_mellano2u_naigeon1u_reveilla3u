@@ -2,7 +2,7 @@ package image_processors;
 
 import java.awt.image.BufferedImage;
 
-public class ImageProcessor {
+public class ImageProcessor implements Processor{
     Processor[] myProcessors;
 
     /**
@@ -13,7 +13,7 @@ public class ImageProcessor {
         myProcessors = processors;
     }
 
-    public BufferedImage processImage(BufferedImage image) {
+    public BufferedImage process(BufferedImage image) {
         for(Processor processor : myProcessors) {
             image = processor.process(image);
         }
