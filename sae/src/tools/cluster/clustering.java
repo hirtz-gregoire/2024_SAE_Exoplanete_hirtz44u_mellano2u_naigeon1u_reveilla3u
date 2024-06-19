@@ -1,4 +1,4 @@
-package image_processors.processors.cluster;
+package tools.cluster;
 
 public interface clustering {
 
