@@ -29,7 +29,7 @@ public class Main {
 
             Processor[] processes = {
                     exporter,
-                    new Clusterer(new KMeans(5), Clusterer.CLUSTER_BY_POSITION, exporter, palette),
+                    new Clusterer(new KMeans(10), Clusterer.CLUSTER_BY_POSITION, exporter, palette),
                     exporter
             };
 

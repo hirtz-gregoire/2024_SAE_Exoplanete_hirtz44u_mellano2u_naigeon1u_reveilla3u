@@ -79,23 +79,10 @@ public class Clusterer implements Processor {
     }
 
     public static Color getColorGradient(double value, double maxValue) {
-         double normalizedValue = value/maxValue;
+        double normalizedValue = value / (maxValue + 0.5);
+        float hue = (float) (360 * normalizedValue) / 360;
 
-         int[] color0 = ColorTool.getTabColor(Color.BLUE.getRGB());
-         int[] color05 = ColorTool.getTabColor(Color.GREEN.getRGB());
-         int[] color1 = ColorTool.getTabColor(Color.YELLOW.getRGB());
-
-         if(normalizedValue <= 0.5) {
-             int r = (int) (color0[0] * (1-normalizedValue) + color05[0] * normalizedValue);
-             int g = (int) (color0[1] * (1-normalizedValue) + color05[1] * normalizedValue);
-             int b = (int) (color0[2] * (1-normalizedValue) + color05[2] * normalizedValue);
-             return new Color(r, g, b);
-         }
-         else {
-             int r = (int) (color05[0] * (1-normalizedValue) + color1[0] * normalizedValue);
-             int g = (int) (color05[1] * (1-normalizedValue) + color1[1] * normalizedValue);
-             int b = (int) (color05[2] * (1-normalizedValue) + color1[2] * normalizedValue);
-             return new Color(r, g, b);
-         }
+        return Color.getHSBColor(hue, 1.0f, 1.0f);
     }
+
 }
