@@ -45,7 +45,7 @@ public class DBSCAN implements Clustering {
     }
 
     /**
-     * 
+     * méthode d'expansion du cluster
      * @param data
      * @param labels
      * @param pointIndex
@@ -64,9 +64,13 @@ public class DBSCAN implements Clustering {
             }
             if (labels[currentPoint] == -1) {
                 labels[currentPoint] = clusterId;
-                List<Integer> currentNeighbors = regionQuery(data, data[currentPoint]);
-                if (currentNeighbors.size() >= minPts) {
-                    copie_voisins.addAll(currentNeighbors);
+                List<Integer> voisins_courant = regionQuery(data, data[currentPoint]);
+                if (voisins_courant.size() >= minPts) {
+                    for (int i = 0; i < voisins_courant.size(); i++) {
+                        if (!copie_voisins.contains(voisins_courant.get(i))) {
+                            copie_voisins.add(voisins_courant.get(i));
+                        }
+                    }
                 }
             }
             index++;
