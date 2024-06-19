@@ -42,32 +42,34 @@ public class KMeans implements Clustering {
      */
     @Override
     public int[] cluster(double[][] data) {
-        //initialisation des Objects et caractéristiques
         int nbrObjects = data.length;
         int nbrCaract = data[0].length;
         Random random = new Random();
 
-        //création d'un tableau à deux dimensions de centroids avec pour taille nbrGroup et nbrCaract
+
+        // Initialisation des centroïdes avec des points de données aléatoires
         double[][] centroids = new double[nbrGroup][nbrCaract];
-
-        //création d'un tableau qui contiendra les différents clusters
-        int[] labels = new int[nbrObjects];
-        boolean converged = false;
-
-        // Initialisation des centroïdes
         for (int i = 0; i < nbrGroup; i++) {
             centroids[i] = data[random.nextInt(nbrObjects)];
         }
 
-        while (!converged) {
+        // Tableau pour stocker les étiquettes de cluster attribuées à chaque objet
+        int[] labels = new int[nbrObjects];
+
+        boolean converged = false;
+        int maxIterations = 500;
+        int iterationCount = 0;
+
+        while (!converged && iterationCount < maxIterations) {
             converged = true;
+
             // Initialisation des groupes
             List<List<double[]>> groups = new ArrayList<>();
             for (int i = 0; i < nbrGroup; i++) {
                 groups.add(new ArrayList<>());
             }
 
-            // Construction des groupes
+            // Assignation des objets aux groupes (clusters)
             for (int i = 0; i < nbrObjects; i++) {
                 int centroidIndex = indexOfCentroid(data[i], centroids);
                 groups.get(centroidIndex).add(data[i]);
@@ -82,6 +84,8 @@ public class KMeans implements Clustering {
                     converged = false;
                 }
             }
+
+            iterationCount++;
         }
 
         return labels;
@@ -131,6 +135,7 @@ public class KMeans implements Clustering {
      */
     private double[] calculateCentroid(List<double[]> group, int nbrCarat) {
         double[] centroid = new double[nbrCarat];
+
         for (double[] dataPoint : group) {
             for (int i = 0; i < nbrCarat; i++) {
                 centroid[i] += dataPoint[i];

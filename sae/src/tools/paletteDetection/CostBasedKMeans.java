@@ -1,11 +1,13 @@
 package tools.paletteDetection;
 
+import tools.ColorTool;
 import tools.Palette;
 import tools.norm.ColorNorm;
 import tools.norm.NormLab;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import static java.lang.Math.exp;
 import static java.lang.Math.max;
@@ -32,6 +34,19 @@ public class CostBasedKMeans implements PaletteFinder {
     @Override
     public void findPalette(BufferedImage image, Palette inOutPalette) {
         // TODO
+
+
+        int width = image.getWidth();
+        int height = image.getHeight();
+        double[][] data = new double[width*height][4];
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int pixel = image.getRGB(x,y);
+                int[] colors = ColorTool.getTabColor(pixel);
+                //on ajoute Pixel et colors dans un tableau a deux dimensions
+            }
+        }
+
         // Algorithme K-means avec itération sur le nombre
         // De couleurs dans la palette jusqu'à ce que
         // scorePaletteTailleN > scorePaletteTailleN-1

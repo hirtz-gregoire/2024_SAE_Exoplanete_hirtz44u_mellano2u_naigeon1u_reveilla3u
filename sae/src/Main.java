@@ -16,8 +16,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String entree = "ressource/img/Planete1.jpg";
-        String sortie = "ressource/out/Planete1.jpg";
+        String entree = "sae/ressource/img/Planete1.jpg";
+        String sortie = "sae/ressource/out/Planete1.jpg";
         String format = "png";
 
         try{
@@ -29,7 +29,7 @@ public class Main {
 
             Processor[] processes = {
                     exporter,
-                    new Clusterer(new KMeans(5), Clusterer.CLUSTER_BY_POSITION, exporter, palette),
+                    new Clusterer(new KMeans(7), Clusterer.CLUSTER_BY_COLOR, exporter, palette),
                     exporter
             };
 
