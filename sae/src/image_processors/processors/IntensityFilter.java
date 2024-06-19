@@ -7,14 +7,14 @@ import java.awt.image.BufferedImage;
 
 import static java.lang.Math.round;
 
-public class ItensityFilter implements Processor {
+public class IntensityFilter implements Processor {
 
     private double intensity;
 
     /**
      * Increase the intensity of the given image by 75%
      */
-    public ItensityFilter() {
+    public IntensityFilter() {
         this.intensity = 75;
     }
 
@@ -22,7 +22,7 @@ public class ItensityFilter implements Processor {
      * Modify the intensity of the given image by [intensity]%
      * @param intensity the intensity change in % (can be negative)
      */
-    public ItensityFilter(double intensity) {
+    public IntensityFilter(double intensity) {
         this.intensity = intensity;
     }
     @Override
