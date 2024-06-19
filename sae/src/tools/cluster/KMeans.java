@@ -17,6 +17,28 @@ public class KMeans implements Clustering {
      *
      * @param data Un tableau en deux dimensions représentant les objets à classifier.
      * @return Un tableau en une dimension contenant le numéro de cluster pour chaque objet.
+     *
+     *
+     * Algorithme 1 : K-Means
+     *
+     * Entrées : ng ≥ 0 nombre de groupes
+     * Entrées : D = {di }i données
+     * Résultat : Centroïdes mis à jour
+     * Initialisation des centroïdes
+     * 1 pour i ∈ [0, ng] faire
+     * 2 ci ← random(D)
+     * Boucle principale
+     * 3 tant que (non(ni)) faire
+     *      Initialisation Groupes
+     *      4 pour i ∈ [0, ng] faire
+     *      5 Gi ← ∅
+     *      Construction des Groupes
+     *      6 pour d ∈ D faire
+     *      7 k ← indiceCentroidePlusProche(d, {ci }i )
+     *      8 Gk ← Gk ∪ d
+     *      Mise à jour des centroïdes
+     *      9 pour i ∈ [0, ng] faire
+     *      10 ci ← barycentre(Gi)
      */
     @Override
     public int[] cluster(double[][] data) {
@@ -28,6 +50,7 @@ public class KMeans implements Clustering {
         //création d'un tableau à deux dimensions de centroids avec pour taille nbrGroup et nbrCaract
         double[][] centroids = new double[nbrGroup][nbrCaract];
 
+        //création d'un tableau qui contiendra les différents clusters
         int[] labels = new int[nbrObjects];
         boolean converged = false;
 
@@ -46,9 +69,9 @@ public class KMeans implements Clustering {
 
             // Construction des groupes
             for (int i = 0; i < nbrObjects; i++) {
-                int nearestCentroidIndex = indexOfCentroid(data[i], centroids);
-                groups.get(nearestCentroidIndex).add(data[i]);
-                labels[i] = nearestCentroidIndex;
+                int centroidIndex = indexOfCentroid(data[i], centroids);
+                groups.get(centroidIndex).add(data[i]);
+                labels[i] = centroidIndex;
             }
 
             // Mise à jour des centroïdes
@@ -135,25 +158,3 @@ public class KMeans implements Clustering {
         return true;
     }
 }
-
-
-
-/*Algorithme 1 : K-Means
-        Entrées : ng ≥ 0 nombre de groupes
-        Entrées : D = {di }i données
-        Résultat : Centroïdes mis à jour
-        Initialisation des centroïdes
-        1 pour i ∈ [0, ng] faire
-        2 ci ← random(D)
-        Boucle principale
-        3 tant que (non(ni)) faire
-            Initialisation Groupes
-            4 pour i ∈ [0, ng] faire
-            5 Gi ← ∅
-            Construction des Groupes
-            6 pour d ∈ D faire
-            7 k ← indiceCentroidePlusProche(d, {ci }i )
-            8 Gk ← Gk ∪ d
-            Mise à jour des centroïdes
-            9 pour i ∈ [0, ng] faire
-            10 ci ← barycentre(Gi) */
