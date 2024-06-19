@@ -1,4 +1,4 @@
-package image_processors.processors.Blur;
+package image_processors.processors.blur;
 
 import image_processors.Processor;
 import image_processors.processors.DuplicateImageByPixel;

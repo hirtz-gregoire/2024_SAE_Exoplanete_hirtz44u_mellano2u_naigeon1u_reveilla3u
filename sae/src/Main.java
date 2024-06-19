@@ -1,8 +1,6 @@
 import image_processors.ImageProcessor;
 import image_processors.Processor;
-import image_processors.processors.Blur.BilateralFilter;
-import image_processors.processors.Blur.GaussianBlur;
-import image_processors.processors.ColorReduction;
+import image_processors.processors.blur.GaussianBlur;
 import image_processors.processors.StepExporter;
 import tools.Palette;
 
