@@ -3,7 +3,7 @@ package tools.cluster;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DBSCAN implements clustering {
+public class DBSCAN implements Clustering {
 
     private double eps;
     private int minPts;
