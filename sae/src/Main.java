@@ -1,5 +1,7 @@
 import image_processors.ImageProcessor;
 import image_processors.Processor;
+import image_processors.processors.Blur.BilateralFilter;
+import image_processors.processors.Blur.GaussianBlur;
 import image_processors.processors.ColorReduction;
 import image_processors.processors.StepExporter;
 import tools.Palette;
@@ -14,8 +16,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String entree = "sae/ressource/img/Planete1.jpg";
-        String sortie = "sae/ressource/out/Planete1.jpg";
+        String entree = "ressource/img/Planete1.jpg";
+        String sortie = "ressource/out/Planete1.jpg";
         String format = "png";
 
         try{
@@ -27,7 +29,7 @@ public class Main {
 
             Processor[] processes = {
                     exporter,
-                    new ColorReduction(palette),
+                    new GaussianBlur(7, 1),
                     exporter
             };
 
