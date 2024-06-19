@@ -30,6 +30,7 @@ public class Palette implements Iterable<Color>{
                 closest = colors[i];
             }
         }
+
         return closest;
     }
 

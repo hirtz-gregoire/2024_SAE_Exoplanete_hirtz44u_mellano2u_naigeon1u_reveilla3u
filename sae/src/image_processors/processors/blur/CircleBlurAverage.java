@@ -1,7 +1,7 @@
 package image_processors.processors.blur;
 
 import image_processors.Processor;
-import image_processors.processors.DuplicateImageByPixel;
+import image_processors.processors.simpleFilters.DuplicateImageByPixel;
 import tools.ColorTool;
 
 import java.awt.image.BufferedImage;
@@ -44,8 +44,8 @@ public class CircleBlurAverage implements Processor {
                         if (neighborY >= height) continue;
 
                         // Check if the pixel is in the circle
-                        int dx = x - kx;
-                        int dy = y - ky;
+                        int dx = x - neighborX;
+                        int dy = y - neighborY;
                         int distanceSquared = dx * dx + dy * dy;
                         int radiusSquared = filterOffset * filterOffset;
                         if(distanceSquared > radiusSquared) continue;
@@ -75,8 +75,4 @@ public class CircleBlurAverage implements Processor {
 
         return nvImage;
     }
-
-
-
-
 }

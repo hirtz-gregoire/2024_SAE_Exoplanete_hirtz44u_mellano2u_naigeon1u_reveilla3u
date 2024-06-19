@@ -4,6 +4,8 @@ import tools.Rgb2Lab;
 
 import java.awt.*;
 
+import static java.lang.Math.max;
+
 public class NormLab implements ColorNorm{
 
     /**
@@ -23,6 +25,10 @@ public class NormLab implements ColorNorm{
         double deltaL = c1_lab[0] - c2_lab[0];
         double deltaC = C1 - C2;
         double deltaH = Math.sqrt(Math.pow(c1_lab[1] - c2_lab[1], 2) + Math.pow(c1_lab[2] - c2_lab[2], 2) - Math.pow(deltaC, 2));
+
+        if(deltaH != deltaH) { // avoid NaN
+            deltaH = 1e-10;
+        }
 
         double Sc = 1.0 + 0.045 * C1;
         double Sh = 1.0 + 0.015 * C1;

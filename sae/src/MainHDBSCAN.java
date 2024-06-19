@@ -1,6 +1,7 @@
 import image_processors.ImageProcessor;
 import image_processors.Processor;
 import image_processors.processors.*;
+import image_processors.processors.blur.BilateralFilter;
 import tools.Palette;
 import tools.cluster.DBSCAN;
 import tools.cluster.KMeans;
@@ -30,7 +31,9 @@ public class MainHDBSCAN {
 
             Processor[] processes = {
                     exporter,
-                    new ColorReduction(new CostBasedKMeans(new ExpoColorCountCost(0.05, 5)), palette),
+                    new BilateralFilter(7, 100, 100),
+                    exporter,
+                    new ColorReduction(new CostBasedKMeans(new ExpoColorCountCost(0.04, 0)), palette),
                     exporter,
                     new Clusterer(new DBSCAN(1, 5), Clusterer.CLUSTER_BY_COLOR_AND_POSITION, exporter, palette),
                     exporter,

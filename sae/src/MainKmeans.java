@@ -1,6 +1,12 @@
 import image_processors.ImageProcessor;
 import image_processors.Processor;
 import image_processors.processors.*;
+import image_processors.processors.blur.BilateralFilter;
+import image_processors.processors.blur.CircleBlurAverage;
+import image_processors.processors.blur.GaussianBlur;
+import image_processors.processors.simpleFilters.ColorFilter;
+import image_processors.processors.simpleFilters.DuplicateImageByPixel;
+import image_processors.processors.simpleFilters.IntensityFilter;
 import tools.Palette;
 import tools.cluster.KMeans;
 import tools.paletteDetection.CostBasedKMeans;
@@ -16,8 +22,8 @@ public class MainKmeans {
 
     public static void main(String[] args) {
 
-        String entree = "ressource/img/Planete1.jpg";
-        String sortie = "ressource/out/Planete1.jpg";
+        String entree = "ressource/img/Planete1.jpeg";
+        String sortie = "ressource/out/Planete1.jpeg";
         String format = "png";
 
         try{
@@ -29,7 +35,9 @@ public class MainKmeans {
 
             Processor[] processes = {
                     exporter,
-                    new ColorReduction(new CostBasedKMeans(new ExpoColorCountCost(0.05, 5)), palette),
+                    new BilateralFilter(7, 100, 100),
+                    exporter,
+                    new ColorReduction(new CostBasedKMeans(new ExpoColorCountCost(0.13, 3)), palette),
                     exporter,
                     new CallbackProcessor(image -> { // Extract ecosystems from biomes
                         DuplicateImageByPixel duplicator = new DuplicateImageByPixel();

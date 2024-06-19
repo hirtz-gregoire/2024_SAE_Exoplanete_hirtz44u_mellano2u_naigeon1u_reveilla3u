@@ -2,6 +2,8 @@ package image_processors.processors;
 
 import image_processors.ImageProcessor;
 import image_processors.Processor;
+import image_processors.processors.simpleFilters.DuplicateImageByPixel;
+import image_processors.processors.simpleFilters.IntensityFilter;
 import tools.cluster.Clustering;
 import tools.ColorTool;
 import tools.Palette;

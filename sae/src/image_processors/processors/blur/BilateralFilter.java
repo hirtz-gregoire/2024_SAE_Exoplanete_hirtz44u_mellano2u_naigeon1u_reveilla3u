@@ -1,7 +1,7 @@
 package image_processors.processors.blur;
 
 import image_processors.Processor;
-import image_processors.processors.DuplicateImageByPixel;
+import image_processors.processors.simpleFilters.DuplicateImageByPixel;
 import tools.ColorTool;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.*;

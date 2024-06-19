@@ -1,4 +1,4 @@
-package image_processors.processors;
+package image_processors.processors.simpleFilters;
 
 import image_processors.Processor;
 import tools.ColorTool;
