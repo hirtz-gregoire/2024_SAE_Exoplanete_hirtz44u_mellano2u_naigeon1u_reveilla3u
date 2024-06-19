@@ -17,10 +17,10 @@ public class KMeans implements Clustering {
      *
      * @param data Un tableau en deux dimensions représentant les objets à classifier.
      * @return Un tableau en une dimension contenant le numéro de cluster pour chaque objet.
-     *
-     *
+     * <p>
+     * <p>
      * Algorithme 1 : K-Means
-     *
+     * <p>
      * Entrées : ng ≥ 0 nombre de groupes
      * Entrées : D = {di }i données
      * Résultat : Centroïdes mis à jour
@@ -29,49 +29,62 @@ public class KMeans implements Clustering {
      * 2 ci ← random(D)
      * Boucle principale
      * 3 tant que (non(ni)) faire
-     *      Initialisation Groupes
-     *      4 pour i ∈ [0, ng] faire
-     *      5 Gi ← ∅
-     *      Construction des Groupes
-     *      6 pour d ∈ D faire
-     *      7 k ← indiceCentroidePlusProche(d, {ci }i )
-     *      8 Gk ← Gk ∪ d
-     *      Mise à jour des centroïdes
-     *      9 pour i ∈ [0, ng] faire
-     *      10 ci ← barycentre(Gi)
+     * Initialisation Groupes
+     * 4 pour i ∈ [0, ng] faire
+     * 5 Gi ← ∅
+     * Construction des Groupes
+     * 6 pour d ∈ D faire
+     * 7 k ← indiceCentroidePlusProche(d, {ci }i )
+     * 8 Gk ← Gk ∪ d
+     * Mise à jour des centroïdes
+     * 9 pour i ∈ [0, ng] faire
+     * 10 ci ← barycentre(Gi)
      */
     @Override
     public int[] cluster(double[][] data) {
-        //initialisation des Objects et caractéristiques
         int nbrObjects = data.length;
         int nbrCaract = data[0].length;
         Random random = new Random();
 
-        //création d'un tableau à deux dimensions de centroids avec pour taille nbrGroup et nbrCaract
+
+        // Initialisation des centroïdes avec des points de données aléatoires
         double[][] centroids = new double[nbrGroup][nbrCaract];
-
-        //création d'un tableau qui contiendra les différents clusters
-        int[] labels = new int[nbrObjects];
-        boolean converged = false;
-
-        // Initialisation des centroïdes
         for (int i = 0; i < nbrGroup; i++) {
             centroids[i] = data[random.nextInt(nbrObjects)];
         }
 
-        while (!converged) {
+        // Tableau pour stocker les étiquettes de cluster attribuées à chaque objet
+        int[] labels = new int[nbrObjects];
+
+        boolean converged = false;
+        int maxIterations = 500;
+        int iterationCount = 0;
+
+        while (!converged && iterationCount < maxIterations) {
             converged = true;
+
             // Initialisation des groupes
             List<List<double[]>> groups = new ArrayList<>();
             for (int i = 0; i < nbrGroup; i++) {
                 groups.add(new ArrayList<>());
             }
 
-            // Construction des groupes
+            // Assignation des objets aux groupes (clusters)
             for (int i = 0; i < nbrObjects; i++) {
                 int centroidIndex = indexOfCentroid(data[i], centroids);
                 groups.get(centroidIndex).add(data[i]);
                 labels[i] = centroidIndex;
+            }
+
+            // Vérification des groupes vides et réassignation si nécessaire
+            for (int i = 0; i < nbrGroup; i++) {
+                if (groups.get(i).isEmpty()) {
+                    // Réassigner aléatoirement des points aux clusters vides
+                    int randomIndex = random.nextInt(nbrObjects);
+                    groups.get(i).add(data[randomIndex]);
+                    labels[randomIndex] = i;
+                    converged = false;
+                }
             }
 
             // Mise à jour des centroïdes
@@ -82,6 +95,8 @@ public class KMeans implements Clustering {
                     converged = false;
                 }
             }
+
+            iterationCount++;
         }
 
         return labels;
@@ -131,6 +146,7 @@ public class KMeans implements Clustering {
      */
     private double[] calculateCentroid(List<double[]> group, int nbrCarat) {
         double[] centroid = new double[nbrCarat];
+
         for (double[] dataPoint : group) {
             for (int i = 0; i < nbrCarat; i++) {
                 centroid[i] += dataPoint[i];

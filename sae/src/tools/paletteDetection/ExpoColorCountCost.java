@@ -4,6 +4,7 @@ import tools.Palette;
 import tools.norm.ColorNorm;
 import tools.norm.NormLab;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static java.lang.Math.exp;
@@ -25,13 +26,17 @@ public class ExpoColorCountCost implements PaletteCostFunction {
     }
 
     public double evaluatePalette(BufferedImage image, Palette palette) {
-        // TODO
-        //
-        // Pour chaque pixel, trouvé la couleur la plus proche dans la palette
-        // Puis ajouter à la somme total la distance entre la couleur du pixel et la couleur de la palette
-        //
-        // Return (sommeDistPixels/nbPixels) * getColorCountCost
-        throw new UnsupportedOperationException("TODO");
+        double totalDistance = 0;
+        for (int x = 0; x < image.getWidth(); x++) {
+            for (int y = 0; y < image.getHeight(); y++) {
+                Color pixelColor = new Color(image.getRGB(x, y));
+                Color closestColor = palette.getClosestColor(pixelColor);
+                double distance = colorNorm.colorDistance(pixelColor, closestColor);
+                totalDistance += distance;
+            }
+        }
+        int nbPixels = image.getWidth() * image.getHeight();
+        return (totalDistance / nbPixels) * getColorCountCost(palette.getColors().length);
     }
 
     /**

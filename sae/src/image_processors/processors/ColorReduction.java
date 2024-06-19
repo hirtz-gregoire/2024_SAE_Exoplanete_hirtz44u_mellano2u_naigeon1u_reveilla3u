@@ -41,8 +41,10 @@ public class ColorReduction implements Processor {
 
     @Override
     public BufferedImage process(BufferedImage image) {
+        System.out.println("Color reduction...");
         if(paletteFinder != null) {
             // Update the palette by reference, usefull for faster clustering
+            System.out.println("Finding color palette...");
             paletteFinder.findPalette(image, palette);
         }
 
