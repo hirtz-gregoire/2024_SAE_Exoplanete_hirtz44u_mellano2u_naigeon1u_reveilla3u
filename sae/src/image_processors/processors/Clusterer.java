@@ -1,7 +1,7 @@
 package image_processors.processors;
 
 import image_processors.Processor;
-import tools.Cluster.Clustering;
+import tools.cluster.Clustering;
 import tools.ColorTool;
 import tools.Palette;
 
@@ -14,9 +14,9 @@ public class Clusterer implements Processor {
 
     // ----------------------------------------------------------
 
-    public final int CLUSTER_BY_COLOR = 0;
-    public final int CLUSTER_BY_POSITION = 1;
-    public final int CLUSTER_BY_COLOR_AND_POSITION = 2;
+    public static final int CLUSTER_BY_COLOR = 0;
+    public static final int CLUSTER_BY_POSITION = 1;
+    public static final int CLUSTER_BY_COLOR_AND_POSITION = 2;
 
     // -----------------------------------------------------------
 
@@ -36,6 +36,7 @@ public class Clusterer implements Processor {
      }
     @Override
     public BufferedImage process(BufferedImage image) {
+         System.out.println("Clusterer processing...");
         ArrayList<double[]> data = new ArrayList<>();
 
         // foreach pixel
@@ -63,7 +64,8 @@ public class Clusterer implements Processor {
             }
         }
 
-        int[] clusters = clusteringAlgorithm.cluster((double[][]) data.toArray());
+        System.out.println("Clustering values...");
+        int[] clusters = clusteringAlgorithm.cluster(data.toArray(new double[0][0]));
         int maxValue = Arrays.stream(clusters).max().getAsInt();
         int i = 0;
 
@@ -84,15 +86,15 @@ public class Clusterer implements Processor {
          int[] color1 = ColorTool.getTabColor(Color.YELLOW.getRGB());
 
          if(normalizedValue <= 0.5) {
-             int r = (int) (color0[0] * (1-value) + color05[0] * value);
-             int g = (int) (color0[1] * (1-value) + color05[1] * value);
-             int b = (int) (color0[2] * (1-value) + color05[2] * value);
+             int r = (int) (color0[0] * (1-normalizedValue) + color05[0] * normalizedValue);
+             int g = (int) (color0[1] * (1-normalizedValue) + color05[1] * normalizedValue);
+             int b = (int) (color0[2] * (1-normalizedValue) + color05[2] * normalizedValue);
              return new Color(r, g, b);
          }
          else {
-             int r = (int) (color05[0] * (1-value) + color1[0] * value);
-             int g = (int) (color05[1] * (1-value) + color1[1] * value);
-             int b = (int) (color05[2] * (1-value) + color1[2] * value);
+             int r = (int) (color05[0] * (1-normalizedValue) + color1[0] * normalizedValue);
+             int g = (int) (color05[1] * (1-normalizedValue) + color1[1] * normalizedValue);
+             int b = (int) (color05[2] * (1-normalizedValue) + color1[2] * normalizedValue);
              return new Color(r, g, b);
          }
     }
