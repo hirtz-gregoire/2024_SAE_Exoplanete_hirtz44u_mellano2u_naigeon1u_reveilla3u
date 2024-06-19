@@ -30,12 +30,12 @@ public class IntensityFilter implements Processor {
 
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
-                int[] rbgValues = ColorTool.getTabColor(image.getRGB(x, y));
-                rbgValues[0] = (int)round(rbgValues[0] + intensity/100 * (255 - rbgValues[0]));
-                rbgValues[1] = (int)round(rbgValues[1] + intensity/100 * (255 - rbgValues[1]));
-                rbgValues[2] = (int)round(rbgValues[2] + intensity/100 * (255 - rbgValues[2]));
+                int[] rgbValues = ColorTool.getTabColor(image.getRGB(x, y));
+                rgbValues[0] = (int)round(rgbValues[0] + intensity/100 * (255 - rgbValues[0]));
+                rgbValues[1] = (int)round(rgbValues[1] + intensity/100 * (255 - rgbValues[1]));
+                rgbValues[2] = (int)round(rgbValues[2] + intensity/100 * (255 - rgbValues[2]));
 
-                image.setRGB(x, y, image.getRGB(x, y));
+                image.setRGB(x, y, ColorTool.getColorIntFromRGB(rgbValues[0], rgbValues[1], rgbValues[2]));
             }
         }
 

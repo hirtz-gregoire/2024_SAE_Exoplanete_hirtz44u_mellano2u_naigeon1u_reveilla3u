@@ -27,10 +27,8 @@ public class ExpoColorCountCost implements PaletteCostFunction {
 
     public double evaluatePalette(BufferedImage image, Palette palette) {
         double totalDistance = 0;
-        System.out.println("Evaluating palette");
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
-                System.out.println("Evaluating palette "+x+" "+y);
                 Color pixelColor = new Color(image.getRGB(x, y));
                 Color closestColor = palette.getClosestColor(pixelColor);
                 double distance = colorNorm.colorDistance(pixelColor, closestColor);
@@ -38,7 +36,6 @@ public class ExpoColorCountCost implements PaletteCostFunction {
             }
         }
         int nbPixels = image.getWidth() * image.getHeight();
-        System.out.println("Finished evaluating palette");
         return (totalDistance / nbPixels) * getColorCountCost(palette.getColors().length);
     }
 

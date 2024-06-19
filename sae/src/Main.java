@@ -1,10 +1,13 @@
 import image_processors.ImageProcessor;
 import image_processors.Processor;
 import image_processors.processors.Clusterer;
+import image_processors.processors.ColorReduction;
 import image_processors.processors.blur.GaussianBlur;
 import image_processors.processors.StepExporter;
 import tools.Palette;
 import tools.cluster.KMeans;
+import tools.paletteDetection.CostBasedKMeans;
+import tools.paletteDetection.ExpoColorCountCost;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -29,7 +32,9 @@ public class Main {
 
             Processor[] processes = {
                     exporter,
-                    new Clusterer(new KMeans(10), Clusterer.CLUSTER_BY_POSITION, exporter, palette),
+                    new ColorReduction(new CostBasedKMeans(new ExpoColorCountCost(2, 5)), palette),
+                    exporter,
+                    new Clusterer(new KMeans(10), Clusterer.CLUSTER_BY_COLOR, exporter, palette),
                     exporter
             };
 
