@@ -29,7 +29,7 @@ public class Main {
 
             Processor[] processes = {
                     exporter,
-                    new GaussianBlur(7, 1),
+                    new BilateralFilter(7, 3, 3),
                     exporter
             };
 
