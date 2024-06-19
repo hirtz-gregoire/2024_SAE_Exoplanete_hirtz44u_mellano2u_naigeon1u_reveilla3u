@@ -1,4 +1,4 @@
-package tools.cluster;
+package tools.Cluster;
 
 public class MainAlgo {
 

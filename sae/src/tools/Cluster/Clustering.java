@@ -1,6 +1,6 @@
-package tools.cluster;
+package tools.Cluster;
 
-public interface clustering {
+public interface Clustering {
 
     /**
      * Applique l'algorithme de clustering sur les données fournies.

@@ -1,14 +1,14 @@
-package tools.cluster;
+package tools.Cluster;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class kMeans implements clustering{
+public class KMeans implements Clustering {
 
     private int nbrGroup;
 
-    public kMeans(int nbrG) {
+    public KMeans(int nbrG) {
         this.nbrGroup=nbrG;
     }
 
