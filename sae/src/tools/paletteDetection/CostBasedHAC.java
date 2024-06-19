@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CostBasedMergeReduction implements PaletteFinder {
+public class CostBasedHAC implements PaletteFinder {
 
     private PaletteCostFunction costFunction;
     private static ColorNorm colorNorm = new NormLab();
@@ -18,7 +18,7 @@ public class CostBasedMergeReduction implements PaletteFinder {
      * Custom algorithm for reducing the number of colors in the image by merging repeatedly colors
      * @param costFunction The cost function used to evaluate palettes
      */
-    public CostBasedMergeReduction(PaletteCostFunction costFunction) {
+    public CostBasedHAC(PaletteCostFunction costFunction) {
         this.costFunction = costFunction;
     }
 
