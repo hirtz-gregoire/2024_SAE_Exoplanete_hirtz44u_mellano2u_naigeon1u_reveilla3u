@@ -1,8 +1,10 @@
 import image_processors.ImageProcessor;
 import image_processors.Processor;
+import image_processors.processors.Clusterer;
 import image_processors.processors.blur.GaussianBlur;
 import image_processors.processors.StepExporter;
 import tools.Palette;
+import tools.cluster.KMeans;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -27,7 +29,7 @@ public class Main {
 
             Processor[] processes = {
                     exporter,
-                    new GaussianBlur(7, 1),
+                    new Clusterer(new KMeans(10), Clusterer.CLUSTER_BY_POSITION, exporter, palette),
                     exporter
             };
 
