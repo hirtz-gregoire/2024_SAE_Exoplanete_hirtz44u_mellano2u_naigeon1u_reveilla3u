@@ -1,9 +1,6 @@
 package tools.cluster;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class DBSCAN implements Clustering {
 
@@ -31,7 +28,7 @@ public class DBSCAN implements Clustering {
             }
 
             // recup point voisin
-            Set<Integer> voisins = regionQuery(data, data[i]);
+            TreeSet<Integer> voisins = regionQuery(data, data[i]);
 
             // si minPts non atteint, alors labellisation BorderPoint
             if (voisins.size() < minPts) {
@@ -55,30 +52,29 @@ public class DBSCAN implements Clustering {
      * @param voisins
      * @param clusterId
      */
-    private void expandCluster(double[][] data, int[] labels, int pointIndex, Set<Integer> voisins, int clusterId) {
+    private void expandCluster(double[][] data, int[] labels, int pointIndex, TreeSet<Integer> voisins, int clusterId) {
         labels[pointIndex] = clusterId;
 
-        List<Integer> copie_voisins = new ArrayList<>(voisins);
+        TreeSet<Integer> copie_voisins = new TreeSet<>(voisins);
         int index = 0;
-        while (index < copie_voisins.size()) {
-            int currentPoint = copie_voisins.get(index);
+
+        Iterator<Integer> iterator = copie_voisins.iterator();
+
+        while (iterator.hasNext()) {
+            int currentPoint = iterator.next();
             if (labels[currentPoint] == 0) {
                 labels[currentPoint] = clusterId;
             }
             if (labels[currentPoint] == -1) {
                 labels[currentPoint] = clusterId;
-                Set<Integer> voisins_courant = regionQuery(data, data[currentPoint]);
+                TreeSet<Integer> voisins_courant = regionQuery(data, data[currentPoint]);
                 if (voisins_courant.size() >= minPts) {
                     copie_voisins.addAll(voisins_courant);
-                    /*for (int i = 0; i < voisins_courant.size(); i++) {
-                            if (!copie_voisins.contains(voisins_courant.get(i))) {
-                                copie_voisins.add(voisins_courant.get(i));
-                            }
-                    }*/
                 }
             }
             index++;
         }
+
         System.out.println("Cluster " + clusterId + " : " + copie_voisins.size() + " points");
     }
 
