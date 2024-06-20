@@ -15,7 +15,7 @@ public class CostBasedHAC implements PaletteFinder {
     private static ColorNorm colorNorm = new NormLab();
 
     /**
-     * Custom algorithm for reducing the number of colors in the image by merging repeatedly colors
+     * Reduce the number of color by merging them repeatedly
      * @param costFunction The cost function used to evaluate palettes
      */
     public CostBasedHAC(PaletteCostFunction costFunction) {
