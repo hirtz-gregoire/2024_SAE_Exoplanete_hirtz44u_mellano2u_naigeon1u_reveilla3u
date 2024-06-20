@@ -2,6 +2,8 @@ package tools.cluster;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class DBSCAN implements Clustering {
 
@@ -16,7 +18,7 @@ public class DBSCAN implements Clustering {
     @Override
     public int[] cluster(double[][] data) {
 
-        // on crée d'un liste de labelisation initialiser a -1
+        // on crée d'un liste de labelisation initialiser a -1 de taille nb objet
         int[] labels = new int[data.length];
         for (int i = 0; i < labels.length; i++) {
             labels[i] = -1;
@@ -27,8 +29,9 @@ public class DBSCAN implements Clustering {
             if (labels[i] != -1) {
                 continue;  // si label != -1, alors point déjà traité
             }
+
             // recup point voisin
-            List<Integer> voisins = regionQuery(data, data[i]);
+            Set<Integer> voisins = regionQuery(data, data[i]);
 
             // si minPts non atteint, alors labellisation BorderPoint
             if (voisins.size() < minPts) {
@@ -52,7 +55,7 @@ public class DBSCAN implements Clustering {
      * @param voisins
      * @param clusterId
      */
-    private void expandCluster(double[][] data, int[] labels, int pointIndex, List<Integer> voisins, int clusterId) {
+    private void expandCluster(double[][] data, int[] labels, int pointIndex, Set<Integer> voisins, int clusterId) {
         labels[pointIndex] = clusterId;
 
         List<Integer> copie_voisins = new ArrayList<>(voisins);
@@ -64,17 +67,19 @@ public class DBSCAN implements Clustering {
             }
             if (labels[currentPoint] == -1) {
                 labels[currentPoint] = clusterId;
-                List<Integer> voisins_courant = regionQuery(data, data[currentPoint]);
+                Set<Integer> voisins_courant = regionQuery(data, data[currentPoint]);
                 if (voisins_courant.size() >= minPts) {
-                    for (int i = 0; i < voisins_courant.size(); i++) {
-                        if (!copie_voisins.contains(voisins_courant.get(i))) {
-                            copie_voisins.add(voisins_courant.get(i));
-                        }
-                    }
+                    copie_voisins.addAll(voisins_courant);
+                    /*for (int i = 0; i < voisins_courant.size(); i++) {
+                            if (!copie_voisins.contains(voisins_courant.get(i))) {
+                                copie_voisins.add(voisins_courant.get(i));
+                            }
+                    }*/
                 }
             }
             index++;
         }
+        System.out.println("Cluster " + clusterId + " : " + copie_voisins.size() + " points");
     }
 
     /**
@@ -83,13 +88,14 @@ public class DBSCAN implements Clustering {
      * @param point point centrale
      * @return liste des points compris autour du oint centrale
      */
-    private List<Integer> regionQuery(double[][] data, double[] point) {
-        List<Integer> voisins = new ArrayList<>();
-        for (int i = 0; i < data.length; i++) {
+    private TreeSet<Integer> regionQuery(double[][] data, double[] point) {
+        TreeSet<Integer> voisins = new TreeSet<>();
+        for (int i=0; i<data.length; i++) {
             if (distance(point, data[i]) <= eps) {
                 voisins.add(i);
             }
         }
+        System.out.println(voisins);
         return voisins;
     }
 
