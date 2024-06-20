@@ -46,11 +46,34 @@ public class KMeans implements Clustering {
         int nbrCaract = data[0].length;
         Random random = new Random();
 
-
-        // Initialisation des centroïdes avec des points de données aléatoires
+        // Initialisation des centroïdes
         double[][] centroids = new double[nbrGroup][nbrCaract];
-        for (int i = 0; i < nbrGroup; i++) {
-            centroids[i] = data[random.nextInt(nbrObjects)];
+        boolean[] chosen = new boolean[nbrObjects];
+        int firstCentroidIndex = random.nextInt(nbrObjects);
+        centroids[0] = data[firstCentroidIndex];
+        chosen[firstCentroidIndex] = true;
+
+        // Choisir les autres centroïdes en utilisant la logique de "K-Means++"
+        //Plus libre de bouger et donc peut trouver plus rapidement le résultat
+        for (int i = 1; i < nbrGroup; i++) {
+            double[] distances = new double[nbrObjects];
+            double maxDistance = -1;
+            int nextCentroidIndex = -1;
+
+            // Calculer les distances au centroïde le plus proche
+            for (int j = 0; j < nbrObjects; j++) {
+                if (!chosen[j]) {
+                    distances[j] = distanceToClosestCentroid(data[j], centroids, i);
+                    if (distances[j] > maxDistance) {
+                        maxDistance = distances[j];
+                        nextCentroidIndex = j;
+                    }
+                }
+            }
+
+            // Choisir le point le plus éloigné comme prochain centroïde
+            centroids[i] = data[nextCentroidIndex];
+            chosen[nextCentroidIndex] = true;
         }
 
         // Tableau pour stocker les étiquettes de cluster attribuées à chaque objet
@@ -101,6 +124,27 @@ public class KMeans implements Clustering {
 
         return labels;
     }
+
+
+    /**
+     * Calcule la distance entre un point de données et le centroïde le plus proche.
+     *
+     * @param dataPoint Le point de données.
+     * @param centroids Les centroïdes existants.
+     * @param nbrCentroids Nombre de centroïdes actuellement définis.
+     * @return La distance au centroïde le plus proche.
+     */
+    private double distanceToClosestCentroid(double[] dataPoint, double[][] centroids, int nbrCentroids) {
+        double minDistance = Double.MAX_VALUE;
+        for (int i = 0; i < nbrCentroids; i++) {
+            double distance = euclideanDistance(dataPoint, centroids[i]);
+            if (distance < minDistance) {
+                minDistance = distance;
+            }
+        }
+        return minDistance;
+    }
+
 
     /**
      * Trouve l'indice du centroïde le plus proche d'un point de donnée.

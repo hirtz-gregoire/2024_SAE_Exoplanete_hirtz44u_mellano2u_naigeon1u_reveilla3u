@@ -22,8 +22,8 @@ public class MainKmeans {
 
     public static void main(String[] args) {
 
-        String entree = "ressource/img/Planete1.jpeg";
-        String sortie = "ressource/out/Planete1.jpeg";
+        String entree = "sae/ressource/img/Planete1.jpg";
+        String sortie = "sae/ressource/out/Planete1.jpg";
         String format = "png";
 
         try{
