@@ -18,8 +18,8 @@ public class MainHDBSCAN {
 
     public static void main(String[] args) {
 
-        String entree = "ressource/img/Planete1.jpg";
-        String sortie = "ressource/out/Planete1.jpg";
+        String entree = "sae/ressource/img/Planete10.jpg";
+        String sortie = "sae/ressource/out/Planete10.jpg";
         String format = "png";
 
         try{
