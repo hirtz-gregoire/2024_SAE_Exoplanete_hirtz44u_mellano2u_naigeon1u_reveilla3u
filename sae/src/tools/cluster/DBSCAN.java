@@ -1,21 +1,31 @@
 package tools.cluster;
 
+import org.apache.commons.lang3.time.StopWatch;
+
+import javax.swing.plaf.IconUIResource;
 import java.util.*;
 
 public class DBSCAN implements Clustering {
 
     private double eps;
     private int minPts;
+    private TreeSet<Integer> visite = new TreeSet<>();
+    private SpacePartioner spacePartioner;
 
     public DBSCAN(double eps, int minPts) {
         this.eps = eps;
         this.minPts = minPts;
+        this.spacePartioner = new SpacePartioner(eps);
     }
 
     @Override
     public int[] cluster(double[][] data) {
 
-        // on crée d'un liste de labelisation initialiser a -1 de taille nb objet
+        visite.clear();
+        spacePartioner.clear();
+        spacePartioner.partition(data);
+
+        // on crée d'un liste de labelisation initialiser a -1
         int[] labels = new int[data.length];
         for (int i = 0; i < labels.length; i++) {
             labels[i] = -1;
@@ -23,17 +33,19 @@ public class DBSCAN implements Clustering {
         int clusterId = 0;
 
         for (int i=0; i < data.length; i++) {
-            if (labels[i] != -1) {
-                continue;  // si label != -1, alors point déjà traité
+
+            if (visite.contains(i)) {
+                continue;
             }
 
             // recup point voisin
-            TreeSet<Integer> voisins = regionQuery(data, data[i]);
+            List<Integer> voisins = regionQuery(data, i);
 
             // si minPts non atteint, alors labellisation BorderPoint
             if (voisins.size() < minPts) {
                 labels[i] = 0;
             }
+
             // sinon nouveau CorePoint
             else {
                 clusterId++;
@@ -52,30 +64,37 @@ public class DBSCAN implements Clustering {
      * @param voisins
      * @param clusterId
      */
-    private void expandCluster(double[][] data, int[] labels, int pointIndex, TreeSet<Integer> voisins, int clusterId) {
+    private void expandCluster(double[][] data, int[] labels, int pointIndex, List<Integer> voisins, int clusterId) {
         labels[pointIndex] = clusterId;
 
-        TreeSet<Integer> copie_voisins = new TreeSet<>(voisins);
         int index = 0;
+        while (index < voisins.size()) {
+            int currentPoint = voisins.get(index);
 
-        Iterator<Integer> iterator = copie_voisins.iterator();
-
-        while (iterator.hasNext()) {
-            int currentPoint = iterator.next();
             if (labels[currentPoint] == 0) {
                 labels[currentPoint] = clusterId;
             }
+
             if (labels[currentPoint] == -1) {
                 labels[currentPoint] = clusterId;
-                TreeSet<Integer> voisins_courant = regionQuery(data, data[currentPoint]);
+
+                List<Integer> voisins_courant = regionQuery(data, currentPoint);
                 if (voisins_courant.size() >= minPts) {
-                    copie_voisins.addAll(voisins_courant);
+                    for (int i = 0; i < voisins_courant.size(); i++) {
+                        if (!visite.contains(voisins_courant.get(i))) {
+                            voisins.add(voisins_courant.get(i));
+                        }
+                    }
                 }
             }
+
+            int size = visite.size();
+            if(size % 1000 < 10) {
+                System.out.println(size);
+            }
+            visite.add(currentPoint);
             index++;
         }
-
-        System.out.println("Cluster " + clusterId + " : " + copie_voisins.size() + " points");
     }
 
     /**
@@ -84,14 +103,14 @@ public class DBSCAN implements Clustering {
      * @param point point centrale
      * @return liste des points compris autour du oint centrale
      */
-    private TreeSet<Integer> regionQuery(double[][] data, double[] point) {
-        TreeSet<Integer> voisins = new TreeSet<>();
-        for (int i=0; i<data.length; i++) {
-            if (distance(point, data[i]) <= eps) {
+    private List<Integer> regionQuery(double[][] data, int point) {
+
+        List<Integer> voisins = spacePartioner.getAdjacentPoints(data, point);
+        for (int i = 0; i < data.length; i++) {
+            if (distance(data[point], data[i]) <= eps) {
                 voisins.add(i);
             }
         }
-        System.out.println(voisins);
         return voisins;
     }
 

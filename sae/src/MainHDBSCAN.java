@@ -18,8 +18,8 @@ public class MainHDBSCAN {
 
     public static void main(String[] args) {
 
-        String entree = "sae/ressource/img/Planete10.jpg";
-        String sortie = "sae/ressource/out/Planete10.jpg";
+        String entree = "ressource/img/Planete1.jpg";
+        String sortie = "ressource/out/Planete1.jpg";
         String format = "png";
 
         try{
@@ -33,7 +33,7 @@ public class MainHDBSCAN {
                     exporter,
                     new BilateralFilter(7, 100, 100),
                     exporter,
-                    new ColorReduction(new CostBasedKMeans(new ExpoColorCountCost(0.04, 0)), palette),
+                    new ColorReduction(new CostBasedKMeans(new ExpoColorCountCost(0.11, 3)), palette),
                     exporter,
                     new Clusterer(new DBSCAN(1, 5), Clusterer.CLUSTER_BY_COLOR_AND_POSITION, exporter, palette),
                     exporter,
