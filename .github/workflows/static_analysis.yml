@@ -1,0 +1,54 @@
+name: push CI
+run-name: ${{ github.repository }} CI [${{ github.event_name }}]
+on: [push]
+env:
+  XDEBUG_MODE: coverage
+jobs:
+  java_pmd:
+    name: programming mistakes
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout ${{ github.ref }} on ${{ runner.os }} machine
+        uses: actions/checkout@v4
+      - name: ⬇️ Installing java
+        uses: actions/setup-java@v4
+        with:
+          distribution: oracle
+          java-version: 22
+      - name: 🔍️ Running java pmd
+        if: always()
+        uses: php-actions/phpcs@v1
+        with:
+          php_version: 8.1
+          path: ./lib
+          report_file: phpcs_report.txt
+      - name: 📦️ Exporting phpcs report to action summary
+        if: always()
+        run: |
+          echo "# PHP Code Sniffer report" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat phpcs_report.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+  java_checkstyle:
+    name: checkstyle
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout ${{ github.ref }} on ${{ runner.os }} machine
+        uses: actions/checkout@v4
+      - name: ⬇️ Installing java
+        uses: actions/setup-java@v4
+        with:
+          distribution: oracle
+          java-version: 22
+  java_spotbug:
+    name: spotbug
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout ${{ github.ref }} on ${{ runner.os }} machine
+        uses: actions/checkout@v4
+      - name: ⬇️ Installing java
+        uses: actions/setup-java@v4
+        with:
+          distribution: oracle
+          java-version: 22
+      
