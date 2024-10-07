@@ -9,13 +9,13 @@
         Run all PMD rules
     </description>
 
-  <!-------------------------------- CODE STYLE -------------------------------->
+  <!--============================== CODE STYLE ==============================-->
   <rule ref="category/java/codestyle.xml"></rule>
   
-  <!------------------------------ BEST PRACTICES ------------------------------>
+  <!--============================ BEST PRACTICES ============================-->
   <rule ref="category/java/bestpractices.xml"></rule>
   
-  <!------------------------------- ERROR PRONE -------------------------------->
+  <!--============================= ERROR PRONE ==============================-->
   <rule ref="category/java/errorprone.xml">
     <exclude name="AssignmentInOperand"/>
     <exclude name="CallSuperLast"/>
