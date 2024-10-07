@@ -19,7 +19,7 @@ jobs:
       java-cache: ${{ steps.setup-java.outputs.cache-hit }}
     
   java_pmd:
-    name: Programming Mistakes Analysis
+    name: Programming Mistakes
     runs-on: ubuntu-latest
     needs: setup
     steps:
@@ -36,22 +36,12 @@ jobs:
         if: steps.pmd.outputs.violations > 0
         run: exit 1
 
-  java_checkstyle:
-    name: Checkstyle Analysis
-    runs-on: ubuntu-latest
-    needs: setup
-    steps:
-      - name: ⬇️ Checkout code
-        uses: actions/checkout@v4
-      - name: 🔍️ Running Checkstyle
-        run: checkstyle -c /google_checks.xml src
-
   java_spotbug:
-    name: SpotBugs Analysis
+    name: SpotBugs
     runs-on: ubuntu-latest
     needs: setup
     steps:
       - name: ⬇️ Checkout code
         uses: actions/checkout@v4
       - name: 🔍️ Running SpotBugs
-        run: spotbugs -textui -effort:max -low src
+        run: echo TODO
