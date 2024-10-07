@@ -20,7 +20,8 @@ jobs:
         id: pmd
         with:
           sourcePath: 'sae'
-      - name: 📦️ Exporting pmd report to PR
+      - run: find . -type f
+      - name: 📦️ Exporting pmd report
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: pmd-report.sarif
