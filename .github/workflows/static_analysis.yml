@@ -1,4 +1,4 @@
-name: push CI
+name: static analysis CI
 run-name: ${{ github.repository }} CI [${{ github.event_name }}]
 on: [push]
 env:
@@ -16,19 +16,17 @@ jobs:
           distribution: oracle
           java-version: 22
       - name: 🔍️ Running java pmd
-        if: always()
-        uses: php-actions/phpcs@v1
+        uses: pmd/pmd-github-action@v2
+        id: pmd
         with:
-          php_version: 8.1
-          path: ./lib
-          report_file: phpcs_report.txt
-      - name: 📦️ Exporting phpcs report to action summary
-        if: always()
-        run: |
-          echo "# PHP Code Sniffer report" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          cat phpcs_report.txt >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
+          sourcePath: 'sae'
+      - name: 📦️ Exporting pmd report to PR
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: pmd-report.sarif
+      - name: Fail build if there are violations
+        if: steps.pmd.outputs.violations > 5
+        run: exit 1
   java_checkstyle:
     name: checkstyle
     runs-on: ubuntu-latest
