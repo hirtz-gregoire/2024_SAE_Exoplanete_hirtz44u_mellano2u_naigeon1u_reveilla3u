@@ -1,6 +1,6 @@
 name: static analysis CI
 run-name: ${{ github.repository }} CI [${{ github.event_name }}]
-on: [push]
+on: [pull_request]
 env:
   XDEBUG_MODE: coverage
 jobs:
@@ -23,7 +23,7 @@ jobs:
           analyzeModifiedFilesOnly: false
           rulesets: '.github/workflows/pmd_ruleset.xml'
       - name: Fail build if there are violations
-        if: steps.pmd.outputs.violations > 5
+        if: steps.pmd.outputs.violations > 0
         run: exit 1
   java_checkstyle:
     name: checkstyle
