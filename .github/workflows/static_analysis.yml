@@ -20,6 +20,7 @@ jobs:
         id: pmd
         with:
           sourcePath: 'sae'
+          analyzeModifiedFilesOnly: false
       - run: find . -type f
       - name: 📦️ Exporting pmd report
         uses: github/codeql-action/upload-sarif@v3
