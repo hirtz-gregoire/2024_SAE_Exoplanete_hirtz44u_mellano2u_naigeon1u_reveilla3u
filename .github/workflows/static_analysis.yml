@@ -44,4 +44,4 @@ jobs:
       - name: ⬇️ Checkout code
         uses: actions/checkout@v4
       - name: 🔍️ Running SpotBugs
-        run: echo TODO
+        run: echo See : https://github.com/Fiera42/Test-CI-javaSpotbug
